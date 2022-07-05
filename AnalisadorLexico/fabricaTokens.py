@@ -28,4 +28,4 @@ def idToken(self, lexema, estado):
         tipo = "literal"
     else: 
         tipo = "NULO"
-    token = classToken(classe, lexema, tipo)
+    token = Token(classe, lexema, tipo)
