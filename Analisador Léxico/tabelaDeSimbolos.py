@@ -1,3 +1,6 @@
+import fabricaTokens
+import classToken
+
 class TabelaSimbolos:
 
     def __init__(self):
@@ -5,10 +8,11 @@ class TabelaSimbolos:
         reservadas = ["inicio", "varinicio", "varfim", "escreva", "leia", "se", "entao", "fimse", "fim", "inicio", "lit"
         "real", "inteiro", "faca", "enquanto", "fimenquanto"]
         for aux in reservadas:
-            self.tabelaSimbolos[aux] = {"lexema":aux, "token":aux, "tipo":"vazio"}
+            obj = classToken(aux, aux, aux)
+            self.tabelaSimbolos[aux] = obj
 
-    def addID(self, lexema):
-        self.tabelaSimbolos[lexema] = {"lexema":lexema, "token":"id", "tipo":"vazio"}
+    def addSimbolo(self, token):
+        self.tabelaSimbolos[token.lexema] = token
 
 
 test = TabelaSimbolos()
