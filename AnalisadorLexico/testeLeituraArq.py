@@ -1,10 +1,13 @@
 import os
 
-with open('demofile.txt', 'r') as f:
-    print(f.read())
-    print(f.tell())
-    print(f.seek(1))
-    print(f.tell())
-    print(f.read())
-    print(f.seek(2))
-    print(f.read())
+with open("testeFile.txt", "w") as f:
+    f.write("O rato roeu a roupa do rei de Roma")
+
+with open('testeFile.txt', 'r') as f:
+    for c in f:
+        print(c)
+    seta = f.tell()
+    print(seta)
+    f.seek(3)
+    print(f.read(36))
+    print(f.tell)
