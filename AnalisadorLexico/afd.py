@@ -1,4 +1,16 @@
 # -*- coding: utf-8 -*-
+from classToken import Token
+
+alfabeto = """ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g 
+h i j k l m n o p q r s t u v w x y z 0 1 2 3 4 5 6 7 8 9 ' , " ; : . ! ? \ * + - / ( ) { } [ ] < > = """.split()
+
+def isValid(c: str, alphabet: list):
+  if c in alphabet:
+    return True
+
+letras = tuple(alfabeto[0:52])
+digitos = tuple(alfabeto[52:62])
+outros = tuple(alfabeto[62:])
 
 class AFD_LEX:
     def __init__(self,inicial, final):
