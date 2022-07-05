@@ -1,5 +1,5 @@
 import fabricaTokens
-import classToken
+from classToken import Token
 
 class TabelaSimbolos:
 
@@ -8,7 +8,7 @@ class TabelaSimbolos:
         reservadas = ["inicio", "varinicio", "varfim", "escreva", "leia", "se", "entao", "fimse", "fim", "inicio", "lit"
         "real", "inteiro", "faca", "enquanto", "fimenquanto"]
         for aux in reservadas:
-            obj = classToken(aux, aux, aux)
+            obj = Token(aux, aux, aux)
             self.tabelaSimbolos[aux] = obj
 
     def addSimbolo(self, token):
@@ -18,6 +18,7 @@ class TabelaSimbolos:
 test = TabelaSimbolos()
 
 print(test.tabelaSimbolos["faca"])
-test.addID("pernambuco")
+pernam = Token("id", "pernambuco", "NULO")
+test.addSimbolo(pernam)
 print(test.tabelaSimbolos)
 

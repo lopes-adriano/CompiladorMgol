@@ -1,4 +1,4 @@
-import classToken
+from classToken import Token
 
 def idToken(self, lexema, estado):
     classes = {
