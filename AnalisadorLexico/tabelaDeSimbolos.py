@@ -1,24 +1,28 @@
-import fabricaTokens
 from classToken import Token
+from tabulate import tabulate
 
 class TabelaSimbolos:
 
     def __init__(self):
-        self.tabelaSimbolos = {}
-        reservadas = ["inicio", "varinicio", "varfim", "escreva", "leia", "se", "entao", "fimse", "fim", "inicio", "lit"
+        self.tabelaSimbolos = []
+        reservadas = ["inicio", "varinicio", "varfim", "escreva", "leia", "se", "entao", "fimse", "fim", "inicio", "lit",
         "real", "inteiro", "faca", "enquanto", "fimenquanto"]
         for aux in reservadas:
             obj = Token(aux, aux, aux)
-            self.tabelaSimbolos[aux] = obj
+            self.tabelaSimbolos.append([obj.lexema, obj.classe, obj.tipo])
+    
+    def showTable(self):
+        print(tabulate(self.tabelaSimbolos, headers=['Lexema', 'Classe', 'Tipo'], tablefmt='github'))
+    
+    def checkSimbolo(self, lexema):
+        for token in self.tabelaSimbolos:
+            if lexema in token:
+                return True
 
     def addSimbolo(self, token):
-        self.tabelaSimbolos[token.lexema] = token
-
-
-test = TabelaSimbolos()
-
-print(test.tabelaSimbolos["faca"])
-pernam = Token("id", "pernambuco", "NULO")
-test.addSimbolo(pernam)
-print(test.tabelaSimbolos)
+        if self.checkSimbolo(token.lexema):
+            return False
+        else:
+            self.tabelaSimbolos.append([token.lexema, token.classe, token.tipo])
+            return True
 
