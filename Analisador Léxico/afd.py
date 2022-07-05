@@ -1,19 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
-
-
-
-
-class Token:
-    def __init__(self, lexema, classe, tipo):
-        self.lexema = lexema
-        self.classe = classe
-        self.tipo = tipo
-    def __repr__(self):
-        return f'|lexema: {self.lexema}|classe: {self.classe}|tipo: { self.tipo}|'
-
-
 class AFD_LEX:
     def __init__(self,inicial, final):
         self.inicial = inicial
