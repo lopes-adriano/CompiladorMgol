@@ -1,3 +1,4 @@
+from lib2to3.pgen2.token import tok_name
 from classToken import Token
 from tabulate import tabulate
 
@@ -9,7 +10,7 @@ class TabelaSimbolos:
         "real", "inteiro", "faca", "enquanto", "fimenquanto"]
         for aux in reservadas:
             obj = Token(aux, aux, aux)
-            self.tabelaSimbolos.append([obj.lexema, obj.classe, obj.tipo])
+            self.tabelaSimbolos.append(obj)
     
     def showTable(self):
         print(tabulate(self.tabelaSimbolos, headers=['Lexema', 'Classe', 'Tipo'], tablefmt='github'))
@@ -23,6 +24,5 @@ class TabelaSimbolos:
         if self.checkSimbolo(token.lexema):
             return False
         else:
-            self.tabelaSimbolos.append([token.lexema, token.classe, token.tipo])
+            self.tabelaSimbolos.append(token)
             return True
-

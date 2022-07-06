@@ -1,3 +1,6 @@
+from types import NoneType
+
+
 class Token:
     def __init__(self, lexema, classe, tipo):
         self.lexema = lexema
@@ -6,7 +9,10 @@ class Token:
 
 
     def __repr__(self):
-        f'Lexema: {self.lexema}, Classe: {self.classe}, Tipo:{self.tipo}'
+        return f'Lexema: {self.lexema}, Classe: {self.classe}, Tipo:{self.tipo}'
+
+    def __iter__(self):
+        return iter([self.lexema, self.classe, self.tipo])
     
     def idToken(self, lexema, estado):
         classes = {
@@ -38,6 +44,6 @@ class Token:
         elif estado == 8:
             tipo = "literal"
         else: 
-            tipo = "NULO"
+            tipo = "nulo"
         tok = Token(lexema, classe, tipo)
         return tok
