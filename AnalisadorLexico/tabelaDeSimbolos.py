@@ -5,7 +5,7 @@ class TabelaSimbolos:
 
     def __init__(self):
         self.tabelaSimbolos = []
-        reservadas = ["inicio", "varinicio", "varfim", "escreva", "leia", "se", "entao", "fimse", "fim", "inicio", "lit",
+        reservadas = ["inicio", "varinicio", "varfim", "escreva", "leia", "se", "entao", "fimse", "fim", "inicio", "literal",
         "real", "inteiro", "faca", "enquanto", "fimenquanto"]
         for aux in reservadas:
             obj = Token(aux, aux, aux)
