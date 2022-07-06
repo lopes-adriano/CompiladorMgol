@@ -20,7 +20,7 @@ class TabelaSimbolos:
                 return True
 
     def addSimbolo(self, token):
-        if self.checkSimbolo(token.lexema):
+        if self.checkSimbolo(token.lexema) or token.classe != 'id':
             return False
         else:
             self.tabelaSimbolos.append(token)

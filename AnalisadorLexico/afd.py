@@ -220,5 +220,5 @@ for c in listaTokens:
     simbolos.addSimbolo(c)
     print(f"{c}.")
 print("\n\nTABELA DE SIMBOLOS")
-simbolos.showTable
+simbolos.showTable()
 
