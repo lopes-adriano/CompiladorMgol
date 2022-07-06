@@ -28,9 +28,9 @@ class Token:
             21: "VIR"
         }
         classe = self.classes[estado]
-        if estado == 1:
+        if (estado == 1) or (estado == 6):
             tipo = "inteiro"
-        elif (estado == 3)or(estado == 6):
+        elif (estado == 3)or(estado == 23):
             tipo = "real"
         elif estado == 8:
             tipo = "literal"
