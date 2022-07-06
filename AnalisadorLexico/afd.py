@@ -136,8 +136,6 @@ def testaArquivo(afd, nome):
             c = f.read(1)
             try:
                 estado = afd.trans[estado][c]
-                if(c != " ")and(c != "\n")and(c != "\t"):
-                    print(f"caractere: {c}    estado atual: {estado}")
                 lexema = lexema + str(c)
                 apontador += 1
                 moveCoordenada(c)
@@ -160,8 +158,6 @@ def testaArquivo(afd, nome):
                         geraToken(lexema, estado)
                     except KeyError:
                         print("Espaço")
-                    if(c != " ")and(c != "\n")and(c != "\t"):
-                        print(f"Estado:{estado}     Lexema:{lexema}")
                     apontador += 1
                     moveCoordenada(compile)
                     testaArquivo(afd, nome)
@@ -216,6 +212,7 @@ def geraToken(lexema, estado):
     if(simbolos.checkSimbolo(lexema)):
         simbolo = simbolos.getToken(lexema)
         listaTokens.append(simbolo)
+        print(simbolo)
     else:
         try:
             token = idToken(lexema, estado)
@@ -236,12 +233,12 @@ simbolos = TabelaSimbolos()
 linha = 1
 coluna = 1
 
+def main():
+    testaArquivo(afd, 'FONTE.alg')
+    for c in listaTokens:
+        simbolos.addSimbolo(c)
+        #print(f"{c}.")
+    print("\n\nTABELA DE SIMBOLOS\n\n")
+    simbolos.showTable()
 
-
-testaArquivo(afd, 'FONTE.alg')
-for c in listaTokens:
-    simbolos.addSimbolo(c)
-    print(f"{c}.")
-print("\n\nTABELA DE SIMBOLOS")
-simbolos.showTable()
-
+main()
