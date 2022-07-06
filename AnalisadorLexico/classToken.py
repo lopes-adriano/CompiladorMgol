@@ -1,5 +1,3 @@
-from types import NoneType
-
 
 class Token:
     def __init__(self, lexema, classe, tipo):
