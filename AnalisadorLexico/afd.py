@@ -115,6 +115,11 @@ class AFD_LEX:
         self.add_trans(0,';',20)
         self.add_trans(0,',',21)
 
+        #Espaço em branco/Tab/Nova linha
+        self.add_trans(0,' ',0)
+        self.add_trans(0,'\t',0)
+        self.add_trans(0,'\n',0)
+
 afd = AFD_LEX()
 
 afd.mgol_trans()
@@ -223,8 +228,7 @@ def geraToken(lexema, estado):
             print(f"Estado:{estado}   Lexema:{lexema}")
 
 
-tok = recon(afd, "12.2e+356")
-print(tok)
+
 
 testaArquivo(afd)
 print(listaTokens)
