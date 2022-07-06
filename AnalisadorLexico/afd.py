@@ -215,6 +215,8 @@ def geraToken(lexema, estado):
     try:
         token = idToken(lexema, estado)
         print(f"Token Gerado|| Classe:{token.classe}   Lexema:{token.lexema}   Tipo:{token.tipo}")
+        #CORRIGIR Adicionar o token a lista
+        #CORRIGIR Adicionar a função __str__ na classe Token
     except KeyError:
         if(lexema != " "):
             print("Não foi possivel gerar Token")
