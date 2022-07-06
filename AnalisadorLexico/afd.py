@@ -1,4 +1,5 @@
 from classToken import Token
+from tabelaDeSimbolos import TabelaSimbolos
 
 class AFD_LEX:
     def __init__(self):
@@ -127,12 +128,12 @@ afd.mgol_trans()
 listaTokens = []
 apontador = 0
 
-def testaArquivo(afd):
+def testaArquivo(afd, nome):
     global listaTokens
     global apontador
     estado = afd.inicial
     lexema = ""
-    with open('testeFile.txt', 'r') as f:
+    with open(nome, 'r') as f:
         final = len(f.read())
         f.seek(apontador)
         while(apontador != final + 1):
@@ -146,10 +147,10 @@ def testaArquivo(afd):
                 if afd.isValid(c):
                     try:
                         geraToken(lexema, estado)
-                        testaArquivo(afd)
+                        testaArquivo(afd, nome)
                     except KeyError:
                         apontador += 1
-                        testaArquivo(afd)
+                        testaArquivo(afd, nome)
 
                 else:
                     if(c != " "):
@@ -161,7 +162,7 @@ def testaArquivo(afd):
                         print("Espaço")
                     print(f"Estado:{estado}     Lexema:{lexema}")
                     apontador += 1
-                    testaArquivo(afd)
+                    testaArquivo(afd, nome)
 
 
             
@@ -212,9 +213,12 @@ def geraToken(lexema, estado):
             print(f"Estado:{estado}   Lexema:{lexema}")
 
 
+simbolos = TabelaSimbolos()
 
-
-testaArquivo(afd)
+testaArquivo(afd, 'FONTE.alg')
 for c in listaTokens:
+    simbolos.addSimbolo(c)
     print(f"{c}.")
+print("\n\nTABELA DE SIMBOLOS")
+simbolos.showTable
 

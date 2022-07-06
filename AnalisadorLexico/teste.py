@@ -6,9 +6,7 @@ from classToken import Token
 #print(x)
 
 def teste():
-    with open("testeFile.txt", "r") as f:
-        for c in f:
-            if c.strip():
-                print(c)
+    with open("FONTE.alg", "w") as f:
+        f.write("try")
 
 teste()
