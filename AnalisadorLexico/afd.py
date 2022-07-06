@@ -116,15 +116,15 @@ class AFD_LEX:
         self.add_trans(0,',',21)
 
         #Espaço em branco/Tab/Nova linha
-        self.add_trans(0,' ',0)
-        self.add_trans(0,'\t',0)
-        self.add_trans(0,'\n',0)
+        self.add_trans(0,' ',-1)
+        self.add_trans(0,'\t',-1)
+        self.add_trans(0,'\n',-1)
 
 afd = AFD_LEX()
 
 afd.mgol_trans()
 
-listaTokens = {}
+listaTokens = []
 apontador = 0
 
 def testaArquivo(afd):
@@ -203,6 +203,7 @@ def geraToken(lexema, estado):
     try:
         token = idToken(lexema, estado)
         print(token)
+        listaTokens.append(token)
         #CORRIGIR Adicionar o token a lista
         #CORRIGIR Adicionar a função __str__ na classe Token
     except KeyError:
@@ -214,4 +215,6 @@ def geraToken(lexema, estado):
 
 
 testaArquivo(afd)
-print(listaTokens)
+for c in listaTokens:
+    print(f"{c}.")
+
