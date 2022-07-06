@@ -1,4 +1,3 @@
-from lib2to3.pgen2.token import tok_name
 from classToken import Token
 from tabulate import tabulate
 
