@@ -219,7 +219,7 @@ def geraToken(lexema, estado):
     global listaTokens
     try:
         token = idToken(lexema, estado)
-        print(f"Token Gerado|| Classe:{token.classe}   Lexema:{token.lexema}   Tipo:{token.tipo}")
+        print(token)
         #CORRIGIR Adicionar o token a lista
         #CORRIGIR Adicionar a função __str__ na classe Token
     except KeyError:
