@@ -18,6 +18,11 @@ class TabelaSimbolos:
             if lexema in token:
                 return True
 
+    def getToken(self, lexema):
+        for token in self.tabelaSimbolos:
+            if lexema in token:
+                return token
+
     def addSimbolo(self, token):
         if self.checkSimbolo(token.lexema) or token.classe != 'id':
             return False

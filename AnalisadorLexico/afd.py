@@ -153,7 +153,7 @@ def testaArquivo(afd, nome):
                         testaArquivo(afd, nome)
 
                 else:
-                    if(c != " "):
+                    if(c != " ")and(c != "\n")and(c != "\t"):
                         print(f'Caractere inválido: {c}')
                         print(f"{estado}")
                     try:
@@ -201,16 +201,21 @@ def idToken(lexema, estado):
 
 def geraToken(lexema, estado):
     global listaTokens
-    try:
-        token = idToken(lexema, estado)
-        print(token)
-        listaTokens.append(token)
-        #CORRIGIR Adicionar o token a lista
-        #CORRIGIR Adicionar a função __str__ na classe Token
-    except KeyError:
-        if(lexema != " "):
-            print("Não foi possivel gerar Token")
-            print(f"Estado:{estado}   Lexema:{lexema}")
+    global simbolos
+    if(simbolos.checkSimbolo(lexema)):
+        simbolo = simbolos.getToken(lexema)
+        listaTokens.append(simbolo)
+    else:
+        try:
+            token = idToken(lexema, estado)
+            print(token)
+            listaTokens.append(token)
+            #CORRIGIR Adicionar o token a lista
+            #CORRIGIR Adicionar a função __str__ na classe Token
+        except KeyError:
+            if(lexema != " ")and(lexema != "\n")and(lexema != "\t"):
+                print("Não foi possivel gerar Token")
+                print(f"Estado:{estado}   Lexema:{lexema}")
 
 
 simbolos = TabelaSimbolos()
