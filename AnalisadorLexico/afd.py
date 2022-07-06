@@ -136,6 +136,93 @@ def recon(afd,palavra):
         print(f'Caractere inválido: {c}')
         print(f"{estado}")
 
+listaTokens = {}
+apontador = 0
+
+def testaArquivo(afd):
+    global listaTokens
+    global apontador
+    estado = afd.inicial
+    lexema = ""
+    with open('testeFile.txt', 'r') as f:
+        final = len(f.read())
+        f.seek(apontador)
+        while(apontador != final + 1):
+            c = f.read(1)
+            try:
+                estado = afd.trans[estado][c]
+                print(f"caractere: {c}    estado atual: {estado}")
+                lexema = lexema + str(c)
+                apontador += 1
+            except KeyError:
+                if afd.isValid(c):
+                    try:
+                        geraToken(lexema, estado)
+                        testaArquivo(afd)
+                    except KeyError:
+                        apontador += 1
+                        testaArquivo(afd)
+
+                else:
+                    if(c != " "):
+                        print(f'Caractere inválido: {c}')
+                        print(f"{estado}")
+                    try:
+                        geraToken(lexema, estado)
+                    except KeyError:
+                        print("Espaço")
+                    print(f"Estado:{estado}     Lexema:{lexema}")
+                    apontador += 1
+                    testaArquivo(afd)
+
+
+            
+
+def idToken(lexema, estado):
+    classes = {
+        1: "Num", 
+        3: "Num",
+        6: "Num",
+        8: "Lit",
+        9: "id", 
+        11: "comentário",
+        12: "EOF",
+        13: "OPR",
+        14: "OPR",
+        15: "OPR",
+        16: "RCB",
+        17: "OPM",
+        18: "AB_P",
+        19: "FC_P",
+        20: "PT_V",
+        21: "VIR",
+        23: "Num"
+    }
+    classe = classes[estado]
+    if (estado == 1)or(estado == 6):
+        tipo = "inteiro"
+    elif (estado == 3)or(estado == 23):
+        tipo = "real"
+    elif estado == 8:
+        tipo = "literal"
+    else: 
+        tipo = "NULO"
+    tok = Token(lexema, classe, tipo)
+    return tok
+
+def geraToken(lexema, estado):
+    global listaTokens
+    try:
+        token = idToken(lexema, estado)
+        print(f"Token Gerado|| Classe:{token.classe}   Lexema:{token.lexema}   Tipo:{token.tipo}")
+    except KeyError:
+        if(lexema != " "):
+            print("Não foi possivel gerar Token")
+            print(f"Estado:{estado}   Lexema:{lexema}")
+
 
 tok = recon(afd, "12.2e+356")
 print(tok)
+
+testaArquivo(afd)
+print(listaTokens)

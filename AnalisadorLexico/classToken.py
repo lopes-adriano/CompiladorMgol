@@ -25,10 +25,13 @@ class Token:
             18: "AB_P",
             19: "FC_P",
             20: "PT_V",
-            21: "VIR"
+            21: "VIR",
+            23: "Num"
         }
         classe = self.classes[estado]
+
         if (estado == 1) or (estado == 6):
+
             tipo = "inteiro"
         elif (estado == 3)or(estado == 23):
             tipo = "real"

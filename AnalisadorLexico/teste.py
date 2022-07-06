@@ -5,8 +5,14 @@ from classToken import Token
 #x =Token("classe", "lexema", "tipo")
 #print(x)
 
-y = pow(3, 3)
-print(y)
+varGlobal = 0
 
-z = 3.5*4
-print(z)
+def ts():
+    global varGlobal
+    for r in range(10):
+        print(r)
+        varGlobal += r
+
+
+ts()
+print(varGlobal)
