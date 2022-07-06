@@ -124,23 +124,6 @@ afd = AFD_LEX()
 
 afd.mgol_trans()
 
-def recon(afd,palavra):
-  estado = afd.inicial
-  try:
-    for c in palavra:
-      estado = afd.trans[estado][c]
-      print(f"caractere: {c}    estado atual: {estado}")
-    return estado in afd.final, estado
-  except KeyError:
-    if afd.isValid(c):
-        estado = afd.inicial
-        i = palavra.find(c)
-        resto = palavra[i:]
-        recon(afd, resto)
-    else:
-        print(f'Caractere inválido: {c}')
-        print(f"{estado}")
-
 listaTokens = {}
 apontador = 0
 
