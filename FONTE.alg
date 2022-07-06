@@ -3,7 +3,7 @@ inicio
         literal A, B;
         inteiro B;
         inteiro D;
-        real C ;
+        @real C ;
     varfim;
     escreva "Digite B:";
     leia B;

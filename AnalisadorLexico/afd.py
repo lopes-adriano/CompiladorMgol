@@ -121,16 +121,12 @@ class AFD_LEX:
         self.add_trans(0,'\t',-1)
         self.add_trans(0,'\n',-1)
 
-afd = AFD_LEX()
-
-afd.mgol_trans()
-
-listaTokens = []
-apontador = 0
 
 def testaArquivo(afd, nome):
     global listaTokens
     global apontador
+    global linha
+    global coluna
     estado = afd.inicial
     lexema = ""
     with open(nome, 'r') as f:
@@ -140,32 +136,47 @@ def testaArquivo(afd, nome):
             c = f.read(1)
             try:
                 estado = afd.trans[estado][c]
-                print(f"caractere: {c}    estado atual: {estado}")
+                if(c != " ")and(c != "\n")and(c != "\t"):
+                    print(f"caractere: {c}    estado atual: {estado}")
                 lexema = lexema + str(c)
                 apontador += 1
+                moveCoordenada(c)
             except KeyError:
                 if afd.isValid(c):
                     try:
                         geraToken(lexema, estado)
                         testaArquivo(afd, nome)
                     except KeyError:
+                        moveCoordenada(c)
                         apontador += 1
                         testaArquivo(afd, nome)
 
                 else:
                     if(c != " ")and(c != "\n")and(c != "\t"):
-                        print(f'Caractere inválido: {c}')
-                        print(f"{estado}")
+                        #Fazer função que identifica esse tipo de ERRO
+                        print(f'ERRO Léxico - Caractere inválido na linguagem: {c}')
+                        print(f'Linha {linha}, coluna {coluna}')
                     try:
                         geraToken(lexema, estado)
                     except KeyError:
                         print("Espaço")
-                    print(f"Estado:{estado}     Lexema:{lexema}")
+                    if(c != " ")and(c != "\n")and(c != "\t"):
+                        print(f"Estado:{estado}     Lexema:{lexema}")
                     apontador += 1
+                    moveCoordenada(compile)
                     testaArquivo(afd, nome)
 
 
-            
+def moveCoordenada(c):
+    global coluna
+    global linha
+    if(c == "\n"):
+        coluna = 1
+        linha += 1
+    elif(c == "\t"):
+        coluna += 4
+    else:
+        coluna += 1  
 
 def idToken(lexema, estado):
     classes = {
@@ -217,8 +228,15 @@ def geraToken(lexema, estado):
                 print("Não foi possivel gerar Token")
                 print(f"Estado:{estado}   Lexema:{lexema}")
 
-
+afd = AFD_LEX()
+afd.mgol_trans()
+listaTokens = []
+apontador = 0
 simbolos = TabelaSimbolos()
+linha = 1
+coluna = 1
+
+
 
 testaArquivo(afd, 'FONTE.alg')
 for c in listaTokens:
