@@ -1,6 +1,9 @@
-from enum import Flag
 from classToken import Token
 from tabelaDeSimbolos import TabelaSimbolos
+import colorama
+from colorama import Fore
+
+colorama.init(autoreset = True)
 
 class AFD_LEX:
     def __init__(self):
@@ -13,9 +16,11 @@ class AFD_LEX:
         self.digitos = tuple(self.alfabeto[52:62])
         self.outros = tuple(self.alfabeto[62:])
         
-    def isValid(self,c):
+    def isValid(self,c, linha, coluna):
         if c in self.alfabeto:
             return True
+        else:
+            print(f'{Fore.YELLOW} Erro Léxico - Caractere inválido na linha {linha}, coluna {coluna-1}.')
     
     def add_trans(self,atual, c, prox):
         nova_trans = {str(c): prox}
@@ -257,6 +262,7 @@ def main2():
     with open("FONTE.alg", "r") as f:
         arquivo = f.read()
     for c in arquivo:
+        moveCoordenada(c)
         if(c == ""):
             geraToken(lexema, estado)
         estado = scanner(estado, c)
@@ -265,14 +271,12 @@ def main2():
             lexema = ""
             estado = 0
             isToken = False
-            if(naoIgnora(c)):
+            if naoIgnora(c) and afd.isValid(c,linha,coluna):
                 lexema = lexema + c
                 estado = scanner(estado, c)
         else:
-            if(naoIgnora(c)or(estado == 10)or(estado == 7)):
+            if (naoIgnora(c) and afd.isValid(c,linha,coluna)) or estado == 10 or estado == 7:
                 lexema = lexema + c
-                print (f"Caracter {c} Estado {estado} else")
-                print(f"Lexema atual: {lexema}")
     geraToken(lexema, estado)
     geraToken("EOF", 12)
     for t in listaTokens:
@@ -285,9 +289,6 @@ def scanner(estado, c):
     global isToken
     try: 
         novoEstado = afd.trans[estado][c]
-        if(c == "}"):
-            print("++++++++++++++++++++++++++++++++    Entrou Aqui +++++++++++++++++++++")
-            print(f"++++++++++++++++++++++++++++++++    Novo Estado:{novoEstado} Caracter:{c} AntigoEstado:{estado} +++++++++++++++++++++")
         return novoEstado
     except:
         if(eFinal(estado)):
