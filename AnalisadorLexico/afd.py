@@ -1,6 +1,9 @@
-from enum import Flag
 from classToken import Token
 from tabelaDeSimbolos import TabelaSimbolos
+import colorama
+from colorama import Fore
+
+colorama.init(autoreset=True)
 
 class AFD_LEX:
     def __init__(self):
@@ -12,10 +15,15 @@ class AFD_LEX:
         self.letras = tuple(self.alfabeto[0:52])
         self.digitos = tuple(self.alfabeto[52:62])
         self.outros = tuple(self.alfabeto[62:])
+        self.simbolos_especiais = [',',';','+','-','*','/','(',')','{','}','<','>','=']
         
-    def isValid(self,c):
+    def isValid(self,c, linha, coluna):
         if c in self.alfabeto:
             return True
+        else:
+            print(f'{Fore.RED}Erro Léxico: caractere inválido na linha {linha}, coluna {coluna}.')
+
+    
     
     def add_trans(self,atual, c, prox):
         nova_trans = {str(c): prox}
@@ -173,7 +181,7 @@ def moveCoordenada(c):
     global coluna
     global linha
     if(c == "\n"):
-        coluna = 1
+        coluna = 0
         linha += 1
     elif(c == "\t"):
         coluna += 4
@@ -237,7 +245,7 @@ listaTokens = []
 apontador = 0
 simbolos = TabelaSimbolos()
 linha = 1
-coluna = 1
+coluna = 0
 
 def main():
     testaArquivo(afd, 'FONTE.alg')
@@ -257,6 +265,7 @@ def main2():
     with open("FONTE.alg", "r") as f:
         arquivo = f.read()
     for c in arquivo:
+        moveCoordenada(c)
         if(c == ""):
             geraToken(lexema, estado)
         estado = scanner(estado, c)
@@ -265,11 +274,11 @@ def main2():
             lexema = ""
             estado = 0
             isToken = False
-            if(naoIgnora(c)):
+            if(naoIgnora(c, estado) and afd.isValid(c, linha, coluna)):
                 lexema = lexema + c
                 estado = scanner(estado, c)
         else:
-            if(naoIgnora(c)):
+            if(naoIgnora(c, estado) and afd.isValid(c, linha, coluna)):
                 lexema = lexema + c
     geraToken(lexema, estado)
     geraToken("EOF", 12)
@@ -292,14 +301,15 @@ def scanner(estado, c):
             return 0
 
 def eFinal(estado):
-    for aux in afd.final:
-        if(estado == aux):
-            return True
-    return False
+    if estado in afd.final:
+        return True
+    else:
+        return False
 
-def naoIgnora(c):
+def naoIgnora(c, estado):
     if(c != " ")and(c != "\n")and(c != "\t"):
         return True
-    return False
+    else:
+        return False
 
 main2()
