@@ -1,3 +1,4 @@
+from glob import glob
 from classToken import Token
 from tabelaDeSimbolos import TabelaSimbolos
 import colorama
@@ -306,7 +307,8 @@ def scanner(estado, c):
             isToken = True
             return estado
         else:
-            erroLexico = True
+            if(naoIgnora(c)):
+                erroLexico = True
             return estado
 
 def eFinal(estado):
@@ -321,6 +323,8 @@ def naoIgnora(c):
 
 def trataErro(estado, c, lexema):
     tipoErro = ""
+    global linha
+    global coluna
     if(estado in range(1, 6)or(estado in range(22, 25))):
         tipoErro = "Num"
     elif(estado in range(7, 8)):
@@ -331,11 +335,12 @@ def trataErro(estado, c, lexema):
         tipoErro = "Comentario"
     else:
         tipoErro = "Lexico"
-    print("ERRO Léxico Identificado: Linha:DARPRINTNALINHA, Coluna:DARPRINTNACOLUNA")
-    print(f"Erro do tipo {tipoErro}, não foi possivel identificar esse Token devido ao lexema incompleto: {lexema}")
-    token = Token(lexema, "ERRO", "NULO")
-    print(token)
-    listaTokens.append(token)
+    if(naoIgnora(c)and(lexema != "")):
+        print(f"ERRO Léxico Identificado: Linha:{linha}, Coluna:{coluna}")
+        print(f"Erro do tipo {tipoErro}, não foi possivel identificar esse Token devido ao lexema incompleto:\\{lexema}\\")
+        token = Token(lexema, "ERRO", "NULO")
+        print(token)
+        listaTokens.append(token)
 
 
 main2()
