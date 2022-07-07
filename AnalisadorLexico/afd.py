@@ -254,8 +254,10 @@ def main():
 
 #main()
 isToken = False
+erroLexico = False
 
 def main2():
+    global erroLexico
     global isToken
     estado = 0
     lexema = ""
@@ -274,6 +276,14 @@ def main2():
             if naoIgnora(c) and afd.isValid(c,linha,coluna):
                 lexema = lexema + c
                 estado = scanner(estado, c)
+        elif(erroLexico):
+            trataErro(estado, c, lexema)
+            lexema = ""
+            estado = 0
+            erroLexico = False
+            if(naoIgnora(c)):
+                lexema = lexema + c
+                estado = scanner(estado, c)
         else:
             if (naoIgnora(c) and afd.isValid(c,linha,coluna)) or estado == 10 or estado == 7:
                 lexema = lexema + c
@@ -286,6 +296,7 @@ def main2():
 
 
 def scanner(estado, c):
+    global erroLexico
     global isToken
     try: 
         novoEstado = afd.trans[estado][c]
@@ -295,7 +306,8 @@ def scanner(estado, c):
             isToken = True
             return estado
         else:
-            return 0
+            erroLexico = True
+            return estado
 
 def eFinal(estado):
     if estado in afd.final:
@@ -306,5 +318,24 @@ def naoIgnora(c):
     if(c != " ")and(c != "\n")and(c != "\t"):
         return True
     return False
+
+def trataErro(estado, c, lexema):
+    tipoErro = ""
+    if(estado in range(1, 6)or(estado in range(22, 25))):
+        tipoErro = "Num"
+    elif(estado in range(7, 8)):
+        tipoErro = "Literal"
+    elif(estado == 9):
+        tipoErro = "Id"
+    elif(estado in range(10, 11)):
+        tipoErro = "Comentario"
+    else:
+        tipoErro = "Lexico"
+    print("ERRO Léxico Identificado: Linha:DARPRINTNALINHA, Coluna:DARPRINTNACOLUNA")
+    print(f"Erro do tipo {tipoErro}, não foi possivel identificar esse Token devido ao lexema incompleto: {lexema}")
+    token = Token(lexema, "ERRO", "NULO")
+    print(token)
+    listaTokens.append(token)
+
 
 main2()
