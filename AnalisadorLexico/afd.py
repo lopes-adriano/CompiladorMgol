@@ -1,4 +1,3 @@
-from glob import glob
 from classToken import Token
 from tabelaDeSimbolos import TabelaSimbolos
 import colorama
@@ -208,7 +207,7 @@ isToken = False
 erroLexico = False
 
 
-def scanner(estado, c):
+def trataChar(estado, c):
     global erroLexico
     global isToken
     try: 
@@ -260,13 +259,14 @@ def main():
     global isToken
     estado = 0
     lexema = ""
+    print("\n\nInicio do Codigo do SCANNER\n\n")
     with open("FONTE.alg", "r") as f:
         arquivo = f.read()
     for c in arquivo:
         moveCoordenada(c)
         if(c == ""):
             geraToken(lexema, estado)
-        estado = scanner(estado, c)
+        estado = trataChar(estado, c)
         if(isToken):
             geraToken(lexema, estado)
             lexema = ""
@@ -274,7 +274,7 @@ def main():
             isToken = False
             if naoIgnora(c) and afd.isValid(c,linha,coluna):
                 lexema = lexema + c
-                estado = scanner(estado, c)
+                estado = trataChar(estado, c)
         elif(erroLexico):
             trataErro(estado, c, lexema)
             lexema = ""
@@ -282,7 +282,7 @@ def main():
             erroLexico = False
             if(naoIgnora(c)):
                 lexema = lexema + c
-                estado = scanner(estado, c)
+                estado = trataChar(estado, c)
         else:
             if (naoIgnora(c) and afd.isValid(c,linha,coluna)) or estado == 10 or estado == 7:
                 lexema = lexema + c
