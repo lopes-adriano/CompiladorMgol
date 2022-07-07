@@ -190,8 +190,6 @@ def geraToken(lexema, estado):
                 if(estado != 11):
                     listaTokens.append(token)
                     print(token)
-                #CORRIGIR Adicionar o token a lista
-                #CORRIGIR Adicionar a função __str__ na classe Token
             except KeyError:
                 print("Não foi possivel gerar Token")
                 print(f"Estado:{estado}   Lexema:{lexema}")
