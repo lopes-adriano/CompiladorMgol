@@ -129,51 +129,6 @@ class AFD_LEX:
         self.add_trans(0,'\n',-1)
 
 
-def testaArquivo(afd, nome):
-    global listaTokens
-    global apontador
-    global linha
-    global coluna
-    estado = afd.inicial
-    lexema = ""
-    with open(nome, 'r') as f:
-        final = len(f.read())
-        f.seek(apontador)
-        while(apontador < final + 1):
-            c = f.read(1)
-            if(c == "\n"):
-                apontador += 1
-                if(lexema != ""):
-                    geraToken(lexema, estado)
-                testaArquivo(afd, nome)
-            try:
-                estado = afd.trans[estado][c]
-                lexema = lexema + str(c)
-                apontador += 1
-                moveCoordenada(c)
-            except KeyError:
-                if afd.isValid(c):
-                    try:
-                        geraToken(lexema, estado)
-                        testaArquivo(afd, nome)
-                    except KeyError:
-                        moveCoordenada(c)
-                        apontador += 1
-                        testaArquivo(afd, nome)
-
-                else:
-                    if(c != " ")and(c != "\n")and(c != "\t"):
-                        #Fazer função que identifica esse tipo de ERRO
-                        print(f'ERRO Léxico - Caractere inválido na linguagem: {c}')
-                        print(f'Linha {linha}, coluna {coluna}')
-                    try:
-                        geraToken(lexema, estado)
-                    except KeyError:
-                        print("Espaço")
-                    apontador += 1
-                    moveCoordenada(compile)
-                    testaArquivo(afd, nome)
-
 
 def moveCoordenada(c):
     global coluna
@@ -240,63 +195,12 @@ def geraToken(lexema, estado):
 afd = AFD_LEX()
 afd.mgol_trans()
 listaTokens = []
-apontador = 0
 simbolos = TabelaSimbolos()
 linha = 1
 coluna = 1
 
-def main():
-    testaArquivo(afd, 'FONTE.alg')
-    for c in listaTokens:
-        simbolos.addSimbolo(c)
-        #print(f"{c}.")
-    print("\n\nTABELA DE SIMBOLOS\n\n")
-    simbolos.showTable()
-
-#main()
 isToken = False
 erroLexico = False
-
-def main2():
-    global erroLexico
-    global isToken
-    estado = 0
-    lexema = ""
-    with open("FONTE.alg", "r") as f:
-        arquivo = f.read()
-    for c in arquivo:
-        moveCoordenada(c)
-        if(c == ""):
-            geraToken(lexema, estado)
-        estado = scanner(estado, c)
-        if(isToken):
-            geraToken(lexema, estado)
-            lexema = ""
-            estado = 0
-            isToken = False
-            if naoIgnora(c) and afd.isValid(c,linha,coluna):
-                lexema = lexema + c
-                estado = scanner(estado, c)
-        elif(erroLexico):
-            trataErro(estado, c, lexema)
-            lexema = ""
-            estado = 0
-            erroLexico = False
-            if(naoIgnora(c)):
-                lexema = lexema + c
-                estado = scanner(estado, c)
-        else:
-            if (naoIgnora(c) and afd.isValid(c,linha,coluna)) or estado == 10 or estado == 7:
-                lexema = lexema + c
-    if(eFinal(estado)):
-        geraToken(lexema, estado)
-    else:
-        trataErro(estado, c, lexema)
-    geraToken("EOF", 12)
-    for t in listaTokens:
-        simbolos.addSimbolo(t)
-    print("\n\nTABELA DE SIMBOLOS\n\n")
-    simbolos.showTable()
 
 
 def scanner(estado, c):
@@ -345,5 +249,45 @@ def trataErro(estado, c, lexema):
         print(f"Erro do tipo {tipoErro}, não foi possivel identificar esse Token devido ao lexema incompleto:\\{lexema}\\")
         listaTokens.append(token)
 
+def main():
+    global erroLexico
+    global isToken
+    estado = 0
+    lexema = ""
+    with open("FONTE.alg", "r") as f:
+        arquivo = f.read()
+    for c in arquivo:
+        moveCoordenada(c)
+        if(c == ""):
+            geraToken(lexema, estado)
+        estado = scanner(estado, c)
+        if(isToken):
+            geraToken(lexema, estado)
+            lexema = ""
+            estado = 0
+            isToken = False
+            if naoIgnora(c) and afd.isValid(c,linha,coluna):
+                lexema = lexema + c
+                estado = scanner(estado, c)
+        elif(erroLexico):
+            trataErro(estado, c, lexema)
+            lexema = ""
+            estado = 0
+            erroLexico = False
+            if(naoIgnora(c)):
+                lexema = lexema + c
+                estado = scanner(estado, c)
+        else:
+            if (naoIgnora(c) and afd.isValid(c,linha,coluna)) or estado == 10 or estado == 7:
+                lexema = lexema + c
+    if(eFinal(estado)):
+        geraToken(lexema, estado)
+    else:
+        trataErro(estado, c, lexema)
+    geraToken("EOF", 12)
+    for t in listaTokens:
+        simbolos.addSimbolo(t)
+    print("\n\nTABELA DE SIMBOLOS\n\n")
+    simbolos.showTable()
 
-main2()
+main()
