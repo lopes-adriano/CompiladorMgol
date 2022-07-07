@@ -123,17 +123,24 @@ class AFD_LEX:
 
 
 def testaArquivo(afd, nome):
+    global maluquice
     global listaTokens
     global apontador
     global linha
     global coluna
-    estado = afd.inicial
+    estado = 0
     lexema = ""
     with open(nome, 'r') as f:
-        final = len(f.read())
         f.seek(apontador)
-        while(apontador != final + 1):
+        while(apontador < tamanho + 1):
             c = f.read(1)
+            if(c == "\n")or(c == " "):
+                apontador += 1
+                if(lexema != ""):
+                    geraToken(lexema, estado)
+                    testaArquivo(afd, nome)
+                else:
+                    testaArquivo(afd, nome)
             try:
                 estado = afd.trans[estado][c]
                 lexema = lexema + str(c)
@@ -232,13 +239,32 @@ apontador = 0
 simbolos = TabelaSimbolos()
 linha = 1
 coluna = 1
+maluquice = 0
+tamanho = 0
 
 def main():
+    global tamanho
+    with open('FONTE.alg', 'r') as f:
+        tamanho = len(f.read())
     testaArquivo(afd, 'FONTE.alg')
     for c in listaTokens:
         simbolos.addSimbolo(c)
-        #print(f"{c}.")
+        print(f"{c}.")
     print("\n\nTABELA DE SIMBOLOS\n\n")
     simbolos.showTable()
 
+def main2():
+    with open("FONTE.alg", "r") as f:
+        arquivo = f.read()
+    for c in arquivo:
+        if(c == "\n"):
+            print(f"___   \\n   ___")
+        elif(c == " "):
+            print(f"___   Espaço   ___")
+        elif(c == "\t"):
+            print(f"___   \\t   ___")
+        else:
+            print(f"___   {c}   ___")
+
+#main2()
 main()
