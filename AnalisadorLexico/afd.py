@@ -288,7 +288,10 @@ def main2():
         else:
             if (naoIgnora(c) and afd.isValid(c,linha,coluna)) or estado == 10 or estado == 7:
                 lexema = lexema + c
-    geraToken(lexema, estado)
+    if(eFinal(estado)):
+        geraToken(lexema, estado)
+    else:
+        trataErro(estado, c, lexema)
     geraToken("EOF", 12)
     for t in listaTokens:
         simbolos.addSimbolo(t)
@@ -336,10 +339,10 @@ def trataErro(estado, c, lexema):
     else:
         tipoErro = "Lexico"
     if(naoIgnora(c)and(lexema != "")):
-        print(f"ERRO Léxico Identificado: Linha:{linha}, Coluna:{coluna}")
-        print(f"Erro do tipo {tipoErro}, não foi possivel identificar esse Token devido ao lexema incompleto:\\{lexema}\\")
         token = Token(lexema, "ERRO", "NULO")
         print(token)
+        print(f"ERRO Léxico Identificado: Linha:{linha}, Coluna:{coluna}")
+        print(f"Erro do tipo {tipoErro}, não foi possivel identificar esse Token devido ao lexema incompleto:\\{lexema}\\")
         listaTokens.append(token)
 
 
