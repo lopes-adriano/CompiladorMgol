@@ -23,7 +23,12 @@ class AFD_LEX:
         else:
             print(f'{Fore.RED}Erro Léxico: caractere inválido na linha {linha}, coluna {coluna}.')
 
-    
+    def uniTokens(self,c, linha, coluna):
+        #verifica se o caractere imediatamente após o token é um op, vir, pt_v ou chaves.
+        if c in self.simbolos_especiais:
+            return True
+        else:
+            print(f'{Fore.RED}Erro Léxico: palavra inválida na linha {linha}, coluna {coluna}.')
     
     def add_trans(self,atual, c, prox):
         nova_trans = {str(c): prox}
