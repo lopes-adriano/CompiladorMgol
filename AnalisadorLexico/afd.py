@@ -298,7 +298,7 @@ def scanner(estado, c):
 
 def eFinal(estado):
     if estado in afd.final:
-            return True
+        return True
     return False
 
 def naoIgnora(c):
