@@ -78,7 +78,7 @@ class AFD_LEX:
 
         #Comentário
         self.add_trans(0,'{',10)
-        self.add_trans(10,"}",11)
+        self.add_trans(10,'}',11)
         self.add_trans(10,' ', 10)
         
         for letra in self.letras:
@@ -86,7 +86,7 @@ class AFD_LEX:
         for digito in self.digitos:
             self.add_trans(10,digito,10)
         for outro in self.outros:
-            if(outro !='"' and outro !="'"):
+            if(outro !='{' and outro !="}"):
                 self.add_trans(10,outro,10)
         
         #EOF
@@ -269,8 +269,10 @@ def main2():
                 lexema = lexema + c
                 estado = scanner(estado, c)
         else:
-            if(naoIgnora(c)):
+            if(naoIgnora(c)or(estado == 10)or(estado == 7)):
                 lexema = lexema + c
+                print (f"Caracter {c} Estado {estado} else")
+                print(f"Lexema atual: {lexema}")
     geraToken(lexema, estado)
     geraToken("EOF", 12)
     for t in listaTokens:
@@ -283,6 +285,9 @@ def scanner(estado, c):
     global isToken
     try: 
         novoEstado = afd.trans[estado][c]
+        if(c == "}"):
+            print("++++++++++++++++++++++++++++++++    Entrou Aqui +++++++++++++++++++++")
+            print(f"++++++++++++++++++++++++++++++++    Novo Estado:{novoEstado} Caracter:{c} AntigoEstado:{estado} +++++++++++++++++++++")
         return novoEstado
     except:
         if(eFinal(estado)):

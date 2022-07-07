@@ -4,7 +4,7 @@ inicio
         inteiro B;
         inteiro D;
         real C ;
-    varfim;
+    varfim; {comentario teste} ;
     escreva "Digite B:";
     leia B;
     escreva "Digite A:";
