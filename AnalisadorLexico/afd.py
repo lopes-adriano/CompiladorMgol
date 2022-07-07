@@ -1,3 +1,4 @@
+from enum import Flag
 from classToken import Token
 from tabelaDeSimbolos import TabelaSimbolos
 
@@ -132,8 +133,13 @@ def testaArquivo(afd, nome):
     with open(nome, 'r') as f:
         final = len(f.read())
         f.seek(apontador)
-        while(apontador != final + 1):
+        while(apontador < final + 1):
             c = f.read(1)
+            if(c == "\n"):
+                apontador += 1
+                if(lexema != ""):
+                    geraToken(lexema, estado)
+                testaArquivo(afd, nome)
             try:
                 estado = afd.trans[estado][c]
                 lexema = lexema + str(c)
@@ -214,14 +220,14 @@ def geraToken(lexema, estado):
         listaTokens.append(simbolo)
         print(simbolo)
     else:
-        try:
-            token = idToken(lexema, estado)
-            print(token)
-            listaTokens.append(token)
-            #CORRIGIR Adicionar o token a lista
-            #CORRIGIR Adicionar a função __str__ na classe Token
-        except KeyError:
-            if(lexema != " ")and(lexema != "\n")and(lexema != "\t"):
+        if(lexema != " ")and(lexema != "\n")and(lexema != "\t"):
+            try:
+                token = idToken(lexema, estado)
+                print(token)
+                listaTokens.append(token)
+                #CORRIGIR Adicionar o token a lista
+                #CORRIGIR Adicionar a função __str__ na classe Token
+            except KeyError:
                 print("Não foi possivel gerar Token")
                 print(f"Estado:{estado}   Lexema:{lexema}")
 
@@ -241,4 +247,59 @@ def main():
     print("\n\nTABELA DE SIMBOLOS\n\n")
     simbolos.showTable()
 
-main()
+#main()
+isToken = False
+
+def main2():
+    global isToken
+    estado = 0
+    lexema = ""
+    with open("FONTE.alg", "r") as f:
+        arquivo = f.read()
+    for c in arquivo:
+        if(c == ""):
+            geraToken(lexema, estado)
+        estado = scanner(estado, c)
+        if(isToken):
+            geraToken(lexema, estado)
+            lexema = ""
+            estado = 0
+            isToken = False
+            if(naoIgnora(c)):
+                lexema = lexema + c
+                estado = scanner(estado, c)
+        else:
+            if(naoIgnora(c)):
+                lexema = lexema + c
+    geraToken(lexema, estado)
+    geraToken("EOF", 12)
+    for t in listaTokens:
+        simbolos.addSimbolo(t)
+    print("\n\nTABELA DE SIMBOLOS\n\n")
+    simbolos.showTable()
+
+
+def scanner(estado, c):
+    global isToken
+    try: 
+        novoEstado = afd.trans[estado][c]
+        return novoEstado
+    except:
+        if(eFinal(estado)):
+            isToken = True
+            return estado
+        else:
+            return 0
+
+def eFinal(estado):
+    for aux in afd.final:
+        if(estado == aux):
+            return True
+    return False
+
+def naoIgnora(c):
+    if(c != " ")and(c != "\n")and(c != "\t"):
+        return True
+    return False
+
+main2()
