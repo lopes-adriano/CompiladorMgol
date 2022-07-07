@@ -297,8 +297,7 @@ def scanner(estado, c):
             return 0
 
 def eFinal(estado):
-    for aux in afd.final:
-        if(estado == aux):
+    if estado in afd.final:
             return True
     return False
 
