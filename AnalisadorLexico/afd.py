@@ -21,7 +21,10 @@ class AFD_LEX:
         if c in self.alfabeto:
             return True
         else:
+            tokenE = Token(c, "ERRO", "NULO")
+            print(f'{Fore.YELLOW}{tokenE}')
             print(f'{Fore.YELLOW} Erro Léxico - Caractere inválido na linha {linha}, coluna {coluna-1}.')
+            listaTokens.append(tokenE)
     
     def add_trans(self,atual, c, prox):
         nova_trans = {str(c): prox}
@@ -178,14 +181,16 @@ def geraToken(lexema, estado):
     global simbolos
     if(simbolos.checkSimbolo(lexema)):
         simbolo = simbolos.getToken(lexema)
-        listaTokens.append(simbolo)
-        print(simbolo)
+        if(estado != 11):
+            listaTokens.append(simbolo)
+            print(simbolo)
     else:
         if(lexema != " ")and(lexema != "\n")and(lexema != "\t"):
             try:
                 token = idToken(lexema, estado)
-                print(token)
-                listaTokens.append(token)
+                if(estado != 11):
+                    listaTokens.append(token)
+                    print(token)
                 #CORRIGIR Adicionar o token a lista
                 #CORRIGIR Adicionar a função __str__ na classe Token
             except KeyError:
@@ -245,9 +250,10 @@ def trataErro(estado, c, lexema):
     if(naoIgnora(c)and(lexema != "")):
         token = Token(lexema, "ERRO", "NULO")
         print(token)
-        print(f"ERRO Léxico Identificado: Linha:{linha}, Coluna:{coluna}")
-        print(f"Erro do tipo {tipoErro}, não foi possivel identificar esse Token devido ao lexema incompleto:\\{lexema}\\")
-        listaTokens.append(token)
+        print(f"ERRO Léxico Identificado: Linha:{linha}")
+        print(f"Erro do tipo {tipoErro}, não foi possivel identificar esse Token devido ao lexema incompleto:({lexema})")
+        if(estado != 11):
+            listaTokens.append(token)
 
 def main():
     global erroLexico
@@ -287,6 +293,9 @@ def main():
     geraToken("EOF", 12)
     for t in listaTokens:
         simbolos.addSimbolo(t)
+    #print("\n\nLista de Tokens\n\n")
+    #for t in listaTokens:
+        #print(t)
     print("\n\nTABELA DE SIMBOLOS\n\n")
     simbolos.showTable()
 
