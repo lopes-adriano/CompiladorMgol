@@ -1,5 +1,6 @@
 from classToken import Token
 from tabelaDeSimbolos import TabelaSimbolos
+from utility import *
 import colorama
 from colorama import Fore
 
@@ -9,7 +10,7 @@ class AFD_LEX:
     def __init__(self):
         self.inicial = 0
         self.final = [1,3,6,8,9,11,12,13,14,15,16,17,18,19,20,21,23]
-        self.trans = {estado:{} for estado in range(0,26)}
+        self.trans = {estado:{} for estado in range(0,25)}
         self.alfabeto = """ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g 
         h i j k l m n o p q r s t u v w x y z 0 1 2 3 4 5 6 7 8 9 ' , " ; : . ! ? \ * + - / ( ) { } [ ] < > = """.split()
         self.letras = tuple(self.alfabeto[0:52])
@@ -46,7 +47,6 @@ class AFD_LEX:
             self.add_trans(22, digito, 23)
             self.add_trans(23, digito, 23)
             self.add_trans(24, digito, 23)
-            self.add_trans(25, digito, 23)
             
 
             
@@ -57,8 +57,8 @@ class AFD_LEX:
         self.add_trans(3,'e',24)
         self.add_trans(4,'+', 5)
         self.add_trans(4,'-', 22)
-        self.add_trans(24,'+', 25)
-        self.add_trans(24,'-', 25)
+        self.add_trans(24,'+', 22)
+        self.add_trans(24,'-', 22)
         
 
         #Ramo lit
@@ -129,172 +129,23 @@ class AFD_LEX:
         self.add_trans(0,' ',-1)
         self.add_trans(0,'\t',-1)
         self.add_trans(0,'\n',-1)
+    
+    def eFinal(self, estado):
+        if estado in self.final:
+            return True
+        return False
 
-
-
-def moveCoordenada(c):
-    global coluna
-    global linha
-    if(c == "\n"):
-        coluna = 1
-        linha += 1
-    elif(c == "\t"):
-        coluna += 4
-    else:
-        coluna += 1  
-
-def idToken(lexema, estado):
-    classes = {
-        1: "Num", 
-        3: "Num",
-        6: "Num",
-        8: "Lit",
-        9: "id", 
-        11: "comentário",
-        12: "EOF",
-        13: "OPR",
-        14: "OPR",
-        15: "OPR",
-        16: "RCB",
-        17: "OPM",
-        18: "AB_P",
-        19: "FC_P",
-        20: "PT_V",
-        21: "VIR",
-        23: "Num"
-    }
-    classe = classes[estado]
-    if (estado == 1)or(estado == 6):
-        tipo = "inteiro"
-    elif (estado == 3)or(estado == 23):
-        tipo = "real"
-    elif estado == 8:
-        tipo = "literal"
-    else: 
-        tipo = "NULO"
-    tok = Token(lexema, classe, tipo)
-    return tok
-
-def geraToken(lexema, estado):
-    global listaTokens
-    global simbolos
-    if(simbolos.checkSimbolo(lexema)):
-        simbolo = simbolos.getToken(lexema)
-        if(estado != 11):
-            listaTokens.append(simbolo)
-            print(simbolo)
-    else:
-        if(lexema != " ")and(lexema != "\n")and(lexema != "\t"):
-            try:
-                token = idToken(lexema, estado)
-                if(estado != 11):
-                    listaTokens.append(token)
-                    print(token)
-            except KeyError:
-                print("Não foi possivel gerar Token")
-                print(f"Estado:{estado}   Lexema:{lexema}")
-
-afd = AFD_LEX()
-afd.mgol_trans()
-listaTokens = []
-simbolos = TabelaSimbolos()
-linha = 1
-coluna = 1
-
-isToken = False
-erroLexico = False
-
-
-def trataChar(estado, c):
-    global erroLexico
-    global isToken
-    try: 
-        novoEstado = afd.trans[estado][c]
-        return novoEstado
-    except:
-        if(eFinal(estado)):
-            isToken = True
-            return estado
-        else:
-            if(naoIgnora(c)):
-                erroLexico = True
-            return estado
-
-def eFinal(estado):
-    if estado in afd.final:
-        return True
-    return False
-
-def naoIgnora(c):
-    if(c != " ")and(c != "\n")and(c != "\t"):
-        return True
-    return False
-
-def trataErro(estado, c, lexema):
-    tipoErro = ""
-    global linha
-    global coluna
-    if(estado in range(1, 6)or(estado in range(22, 25))):
-        tipoErro = "Num"
-    elif(estado in range(7, 8)):
-        tipoErro = "Literal"
-    elif(estado == 9):
-        tipoErro = "Id"
-    elif(estado in range(10, 11)):
-        tipoErro = "Comentario"
-    else:
-        tipoErro = "Lexico"
-    if(naoIgnora(c)and(lexema != "")):
-        token = Token(lexema, "ERRO", "NULO")
-        print(token)
-        print(f"ERRO Léxico Identificado: Linha:{linha}")
-        print(f"Erro do tipo {tipoErro}, não foi possivel identificar esse Token devido ao lexema incompleto:({lexema})")
-        if(estado != 11):
-            listaTokens.append(token)
-
-def main():
-    global erroLexico
-    global isToken
-    estado = 0
-    lexema = ""
-    print("\n\nInicio do Codigo do SCANNER\n\n")
-    with open("FONTE.alg", "r") as f:
-        arquivo = f.read()
-    for c in arquivo:
-        moveCoordenada(c)
-        if(c == ""):
-            geraToken(lexema, estado)
-        estado = trataChar(estado, c)
-        if(isToken):
-            geraToken(lexema, estado)
-            lexema = ""
-            estado = 0
-            isToken = False
-            if naoIgnora(c) and afd.isValid(c,linha,coluna):
-                lexema = lexema + c
-                estado = trataChar(estado, c)
-        elif(erroLexico):
-            trataErro(estado, c, lexema)
-            lexema = ""
-            estado = 0
-            erroLexico = False
-            if(naoIgnora(c)):
-                lexema = lexema + c
-                estado = trataChar(estado, c)
-        else:
-            if (naoIgnora(c) and afd.isValid(c,linha,coluna)) or estado == 10 or estado == 7:
-                lexema = lexema + c
-    if(eFinal(estado)):
-        geraToken(lexema, estado)
-    else:
-        trataErro(estado, c, lexema)
-    geraToken("EOF", 12)
-    for t in listaTokens:
-        simbolos.addSimbolo(t)
-    #print("\n\nLista de Tokens\n\n")
-    #for t in listaTokens:
-        #print(t)
-    print("\n\nTABELA DE SIMBOLOS\n\n")
-    simbolos.showTable()
-
-main()
+    def trataChar(self, estado, c):
+        global erroLexico
+        global isToken
+        try: 
+            novoEstado = self.trans[estado][c]
+            return novoEstado
+        except:
+            if(self.eFinal(estado)):
+                isToken = True
+                return estado
+            else:
+                if(naoIgnora(c)):
+                    erroLexico = True
+                return estado

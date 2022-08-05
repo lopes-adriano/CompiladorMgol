@@ -1,7 +1,7 @@
 from classToken import Token
 from tabulate import tabulate
 
-class TabelaSimbolos:
+class TabelaSimbolos(Token):
 
     def __init__(self):
         self.tabelaSimbolos = []

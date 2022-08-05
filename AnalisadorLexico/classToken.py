@@ -11,3 +11,37 @@ class Token:
 
     def __iter__(self):
         return iter([self.lexema, self.classe, self.tipo])
+
+    @staticmethod
+    def idToken(lexema, estado):
+        classes = {
+            1: "Num", 
+            3: "Num",
+            6: "Num",
+            8: "Lit",
+            9: "id", 
+            11: "comentário",
+            12: "EOF",
+            13: "OPR",
+            14: "OPR",
+            15: "OPR",
+            16: "RCB",
+            17: "OPM",
+            18: "AB_P",
+            19: "FC_P",
+            20: "PT_V",
+            21: "VIR",
+            23: "Num"
+        }
+        classe = classes[estado]
+        if (estado == 1)or(estado == 6):
+            tipo = "inteiro"
+        elif (estado == 3)or(estado == 23):
+            tipo = "real"
+        elif estado == 8:
+            tipo = "literal"
+        else: 
+            tipo = "NULO"
+        tok = Token(lexema, classe, tipo)
+        return tok
+        
