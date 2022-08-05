@@ -87,7 +87,7 @@ def main():
             erroLexico = False
             if(naoIgnora(c)):
                 lexema = lexema + c
-                estado = afd.trataChar(estado, c)
+                estado = trataChar(estado, c)
         else:
             if (naoIgnora(c) and afd.isValid(c,linha,coluna)) or estado == 10 or estado == 7:
                 lexema = lexema + c
