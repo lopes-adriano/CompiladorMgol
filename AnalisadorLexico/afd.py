@@ -6,6 +6,9 @@ from colorama import Fore
 
 colorama.init(autoreset = True)
 
+isToken = False
+erroLexico = False
+
 class AFD_LEX:
     def __init__(self):
         self.inicial = 0
