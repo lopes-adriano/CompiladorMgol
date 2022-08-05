@@ -32,13 +32,4 @@ def trataErro(estado, c, lexema):
         if(estado != 11):
             listaTokens.append(token)
 
-def moveCoordenada(c):
-    global coluna
-    global linha
-    if(c == "\n"):
-        coluna = 1
-        linha += 1
-    elif(c == "\t"):
-        coluna += 4
-    else:
-        coluna += 1  
+  

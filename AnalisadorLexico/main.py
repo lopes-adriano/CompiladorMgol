@@ -33,6 +33,32 @@ def geraToken(lexema, estado):
                 print("Não foi possivel gerar Token")
                 print(f"Estado:{estado}   Lexema:{lexema}")
 
+def moveCoordenada(c):
+    global coluna
+    global linha
+    if(c == "\n"):
+        coluna = 1
+        linha += 1
+    elif(c == "\t"):
+        coluna += 4
+    else:
+        coluna += 1
+
+def trataChar(estado, c):
+    global erroLexico
+    global isToken
+    try: 
+        novoEstado = afd.trans[estado][c]
+        return novoEstado
+    except:
+        if(afd.eFinal(estado)):
+            isToken = True
+            return estado
+        else:
+            if(naoIgnora(c)):
+                erroLexico = True
+            return estado
+
 def main():
     global erroLexico
     global isToken
@@ -45,7 +71,7 @@ def main():
         moveCoordenada(c)
         if(c == ""):
             geraToken(lexema, estado)
-        estado = afd.trataChar(estado, c)
+        estado = trataChar(estado, c)
         if(isToken):
             geraToken(lexema, estado)
             lexema = ""
@@ -53,7 +79,7 @@ def main():
             isToken = False
             if naoIgnora(c) and afd.isValid(c,linha,coluna):
                 lexema = lexema + c
-                estado = afd.trataChar(estado, c)
+                estado = trataChar(estado, c)
         elif(erroLexico):
             trataErro(estado, c, lexema)
             lexema = ""

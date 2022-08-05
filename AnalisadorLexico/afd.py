@@ -6,9 +6,6 @@ from colorama import Fore
 
 colorama.init(autoreset = True)
 
-isToken = False
-erroLexico = False
-
 class AFD_LEX:
     def __init__(self):
         self.inicial = 0
@@ -128,27 +125,10 @@ class AFD_LEX:
         self.add_trans(0,';',20)
         self.add_trans(0,',',21)
 
-        #Espaço em branco/Tab/Nova linha
-        self.add_trans(0,' ',-1)
-        self.add_trans(0,'\t',-1)
-        self.add_trans(0,'\n',-1)
     
     def eFinal(self, estado):
         if estado in self.final:
             return True
         return False
 
-    def trataChar(self, estado, c):
-        global erroLexico
-        global isToken
-        try: 
-            novoEstado = self.trans[estado][c]
-            return novoEstado
-        except:
-            if(self.eFinal(estado)):
-                isToken = True
-                return estado
-            else:
-                if(naoIgnora(c)):
-                    erroLexico = True
-                return estado
+    
