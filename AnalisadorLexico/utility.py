@@ -1,6 +1,8 @@
 from classToken import Token
-listaTokens = []
 
+linha = 1
+coluna = 1
+listaTokens = []
 
 def naoIgnora(c):
     if(c != " ")and(c != "\n")and(c != "\t"):
@@ -11,6 +13,7 @@ def trataErro(estado, c, lexema):
     tipoErro = ""
     global linha
     global coluna
+    global listaTokens
     if(estado in range(1, 6)or(estado in range(22, 25))):
         tipoErro = "Num"
     elif(estado in range(7, 8)):
