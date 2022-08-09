@@ -13,7 +13,7 @@ inicio
     entao
         se(B<=4)
         entao
-            escreva "B esta entre 2 e 4";
+            escreva "B esta entre 2 e 4"{Teste};
         fimse
     fimse
     B<-B+1;

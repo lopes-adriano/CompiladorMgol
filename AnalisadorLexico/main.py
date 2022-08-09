@@ -72,14 +72,12 @@ def geraToken(lexema, estado):
     global simbolos
     if(simbolos.checkSimbolo(lexema)):
         simbolo = simbolos.getToken(lexema)
-        if(estado != 11):
-            return simbolo
+        return simbolo
     else:
         if(lexema != " ")and(lexema != "\n")and(lexema != "\t"):
             try:
                 token = idToken(lexema, estado)
-                if(estado != 11):
-                    return token
+                return token
             except KeyError:
                 print("Não foi possivel gerar Token")
                 print(f"Estado:{estado}   Lexema:{lexema}")
@@ -192,8 +190,9 @@ def main():
         arquivo = f.read()
     while(auxFimArq == False):
         tk_retorno = scanner(arquivo)
-        listaTokens.append(tk_retorno)
-        print(tk_retorno)
+        if(tk_retorno.classe != "comentário"):
+            listaTokens.append(tk_retorno)
+            print(tk_retorno)
 
     print("\n\nTABELA DE SIMBOLOS\n\n")
     simbolos.showTable()
