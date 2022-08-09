@@ -1,0 +1,10 @@
+e1 - Erro: esperado um ';' antes do token '{token}'.
+e2 - Erro: expressão esperada antes do token '{token}'.
+e3 - Erro: variável '{token}' não declarada.
+e4 - Erro: esperado um  ')' antes do token '{token}'.
+e5 - Erro: esperado um  ']' antes do token '{token}'.
+e6 - Erro: esperado um ';' ou ',' antes do token '{token}'.
+e8 - Erro: token '{token}' inesperado.
+e9 - Erro: identificador esperado após declaração do tipo '{token}'.
+e10 - Erro: esperado ';', ',' operação aritmética, relacional ou atribuição antes de '{token}'.
+
