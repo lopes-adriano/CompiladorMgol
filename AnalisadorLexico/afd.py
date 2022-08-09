@@ -3,7 +3,9 @@ from tabelaDeSimbolos import TabelaSimbolos
 import colorama
 from colorama import Fore
 
+
 colorama.init(autoreset = True)
+
 
 class AFD_LEX:
     def __init__(self):
@@ -126,15 +128,29 @@ class AFD_LEX:
         self.add_trans(0,',',21)
 
         #Espaço em branco/Tab/Nova linha
-        self.add_trans(0,' ',-1)
-        self.add_trans(0,'\t',-1)
-        self.add_trans(0,'\n',-1)
+        self.add_trans(0,' ',0)
+        self.add_trans(0,'\t',0)
+        self.add_trans(0,'\n',0)
 
+
+afd = AFD_LEX()
+afd.mgol_trans()
+listaTokens = []
+simbolos = TabelaSimbolos()
+linha = 1
+coluna = 1
+auxArq = 0
+auxFimArq = False
+isToken = False
+erroLexico = False
 
 
 def moveCoordenada(c):
+    global auxArq
     global coluna
     global linha
+
+    auxArq += 1
     if(c == "\n"):
         coluna = 1
         linha += 1
@@ -142,6 +158,7 @@ def moveCoordenada(c):
         coluna += 4
     else:
         coluna += 1  
+
 
 def idToken(lexema, estado):
     classes = {
@@ -175,34 +192,25 @@ def idToken(lexema, estado):
     tok = Token(lexema, classe, tipo)
     return tok
 
+
 def geraToken(lexema, estado):
     global listaTokens
     global simbolos
     if(simbolos.checkSimbolo(lexema)):
         simbolo = simbolos.getToken(lexema)
         if(estado != 11):
-            listaTokens.append(simbolo)
-            print(simbolo)
+            return simbolo
     else:
         if(lexema != " ")and(lexema != "\n")and(lexema != "\t"):
             try:
                 token = idToken(lexema, estado)
                 if(estado != 11):
-                    listaTokens.append(token)
-                    print(token)
+                    return token
             except KeyError:
                 print("Não foi possivel gerar Token")
                 print(f"Estado:{estado}   Lexema:{lexema}")
-
-afd = AFD_LEX()
-afd.mgol_trans()
-listaTokens = []
-simbolos = TabelaSimbolos()
-linha = 1
-coluna = 1
-
-isToken = False
-erroLexico = False
+                token = Token(lexema, "ERRO", "NULL")
+                return token
 
 
 def trataChar(estado, c):
@@ -220,15 +228,18 @@ def trataChar(estado, c):
                 erroLexico = True
             return estado
 
+
 def eFinal(estado):
     if estado in afd.final:
         return True
     return False
 
+
 def naoIgnora(c):
     if(c != " ")and(c != "\n")and(c != "\t"):
         return True
     return False
+
 
 def trataErro(estado, c, lexema):
     tipoErro = ""
@@ -248,53 +259,49 @@ def trataErro(estado, c, lexema):
         token = Token(lexema, "ERRO", "NULO")
         print(token)
         print(f"ERRO Léxico Identificado: Linha:{linha}")
-        print(f"Erro do tipo {tipoErro}, não foi possivel identificar esse Token devido ao lexema incompleto:({lexema})")
-        if(estado != 11):
-            listaTokens.append(token)
+        return token
 
-def main():
-    global erroLexico
+
+def scanner(arquivo):
+    global auxFimArq
     global isToken
-    estado = 0
+    global erroLexico
     lexema = ""
-    print("\n\nInicio do Codigo do SCANNER\n\n")
-    with open("FONTE.alg", "r") as f:
-        arquivo = f.read()
-    for c in arquivo:
-        moveCoordenada(c)
-        if(c == ""):
-            geraToken(lexema, estado)
+    estado = 0
+
+    while(auxArq < len(arquivo)):
+        c = arquivo[auxArq]
         estado = trataChar(estado, c)
+
         if(isToken):
-            geraToken(lexema, estado)
-            lexema = ""
-            estado = 0
+            token = geraToken(lexema, estado)
+            simbolos.addSimbolo(token)
             isToken = False
-            if naoIgnora(c) and afd.isValid(c,linha,coluna):
-                lexema = lexema + c
-                estado = trataChar(estado, c)
+            return token
+
         elif(erroLexico):
-            trataErro(estado, c, lexema)
-            lexema = ""
-            estado = 0
+            token = trataErro(estado, c, lexema)
             erroLexico = False
-            if(naoIgnora(c)):
-                lexema = lexema + c
-                estado = trataChar(estado, c)
+
         else:
+            moveCoordenada(c)
             if (naoIgnora(c) and afd.isValid(c,linha,coluna)) or estado == 10 or estado == 7:
                 lexema = lexema + c
-    if(eFinal(estado)):
-        geraToken(lexema, estado)
-    else:
-        trataErro(estado, c, lexema)
-    geraToken("EOF", 12)
-    for t in listaTokens:
-        simbolos.addSimbolo(t)
-    #print("\n\nLista de Tokens\n\n")
-    #for t in listaTokens:
-        #print(t)
+    auxFimArq = True
+    token = geraToken("EOF", 12)
+    return token
+
+
+def main():
+    with open("FONTE.alg", "r") as f:
+        arquivo = f.read()
+    while(auxFimArq == False):
+        tk_retorno = scanner(arquivo)
+        listaTokens.append(tk_retorno)
+        print(tk_retorno)
+
     print("\n\nTABELA DE SIMBOLOS\n\n")
     simbolos.showTable()
+
 
 main()
