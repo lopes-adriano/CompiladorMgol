@@ -5,7 +5,7 @@ inicio
         inteiro D;
         real C ;
     varfim;
-    escreva "Digite B:";
+    escreva @"Digite B:";
     leia B;
     escreva "Digite A:";
     leia A;
