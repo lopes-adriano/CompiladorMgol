@@ -162,23 +162,23 @@ def moveCoordenada(c):
 
 def idToken(lexema, estado):
     classes = {
-        1: "Num", 
-        3: "Num",
-        6: "Num",
-        8: "Lit",
+        1: "num", 
+        3: "num",
+        6: "num",
+        8: "lit",
         9: "id", 
         11: "comentário",
         12: "EOF",
-        13: "OPR",
-        14: "OPR",
-        15: "OPR",
-        16: "RCB",
-        17: "OPM",
-        18: "AB_P",
-        19: "FC_P",
-        20: "PT_V",
-        21: "VIR",
-        23: "Num"
+        13: "opr",
+        14: "opr",
+        15: "opr",
+        16: "rcb",
+        17: "opm",
+        18: "ab_p",
+        19: "fc_p",
+        20: "pt_v",
+        21: "vir",
+        23: "num"
     }
     classe = classes[estado]
     if (estado == 1)or(estado == 6):
@@ -246,13 +246,13 @@ def trataErro(estado, c, lexema):
     global linha
     global coluna
     if(estado in range(1, 6)or(estado in range(22, 25))):
-        tipoErro = "Num"
+        tipoErro = "num"
     elif(estado in range(7, 8)):
-        tipoErro = "Literal"
+        tipoErro = "literal"
     elif(estado == 9):
-        tipoErro = "Id"
+        tipoErro = "id"
     elif(estado in range(10, 11)):
-        tipoErro = "Comentario"
+        tipoErro = "comentário"
     else:
         tipoErro = "Lexico"
     if(naoIgnora(c)and(lexema != "")):
