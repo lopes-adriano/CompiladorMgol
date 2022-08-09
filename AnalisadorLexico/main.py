@@ -164,16 +164,12 @@ def scanner(arquivo):
             return token
 
         elif(erroLexico):
+            if(lexema == ""):
+                lexema = c
+                moveCoordenada(c)
             token = trataErro(estado, c, lexema)
             erroLexico = False
             return token
-
-        #elif((not afd.isValid(c,linha,coluna)) and (naoIgnora(c))):
-            #moveCoordenada(c)
-           # print(f'{Fore.YELLOW} Erro Léxico - Caractere inválido na linha {linha}, coluna {coluna-1}.')
-           # if(not (estado == 10 or estado == 7)):
-              #  tokenE = Token(c, "ERRO", "NULO")
-             #   return tokenE
             
         else:
             moveCoordenada(c)
