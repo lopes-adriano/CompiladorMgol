@@ -1,6 +1,7 @@
 inicio
     varinicio
-        literal A, B;
+        literal A; 
+        literal B;
         inteiro B;
         inteiro D;
         real C ;
