@@ -138,7 +138,8 @@ def scanner(arquivo):
     global erroLexico
     lexema = ""
     estado = 0
-
+    if(auxFimArq):
+        return geraToken("EOF", 12)
     while(auxArq < len(arquivo)):
         c = arquivo[auxArq]
         estado = trataChar(estado, c)
@@ -174,9 +175,8 @@ def scanner(arquivo):
             moveCoordenada(c)
             if naoIgnora(c) or estado == 10 or estado == 7:
                 lexema = lexema + c
-
     auxFimArq = True
-    token = geraToken("EOF", 12)
+    token = geraToken(lexema, estado)
     return token
 
 

@@ -33,15 +33,18 @@ def action(s,a):
   
   
 def lr_parser(actions, goto):
+    global auxFimArq
     pilha = ['EOF',0]
     s = pilha[-1]
-    a = util.scanner(arquivo).classe
+    a = util.scanner(arquivo)
     while(True):
         s = pilha[-1]
-        acao = action(s,a)
+        acao = action(s,a.classe)
         if acao[0] == 's':
             pilha.append(int(acao[1:len(acao)]))
-            a = util.scanner(arquivo).classe
+            a = util.scanner(arquivo)
+            if(a.classe == "fim"):
+                auxFimArq = True
         elif acao[0] == 'r':
             prod = gramatica[int(acao[1:len(acao)])]
             p = prod.split(' ')
