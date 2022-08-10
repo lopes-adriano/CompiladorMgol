@@ -60,6 +60,5 @@ def lr_parser(actions, goto):
         
 
 
-
 lr_parser(actions, goto)
 
