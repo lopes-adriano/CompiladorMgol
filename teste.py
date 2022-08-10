@@ -43,7 +43,7 @@ def lr_parser(actions, goto):
         if acao[0] == 's':
             pilha.append(int(acao[1:len(acao)]))
             a = util.scanner(arquivo)
-            if(a.classe == "fim"):
+            if(s == 'EOF'):
                 auxFimArq = True
         elif acao[0] == 'r':
             prod = gramatica[int(acao[1:len(acao)])]
@@ -55,7 +55,6 @@ def lr_parser(actions, goto):
             pilha.append(int(goto.at[t,p[0]]))
             print(prod)
         elif acao == 'acc':
-            print('DEU CERTO PORRA')
             break
     
         
@@ -64,7 +63,3 @@ def lr_parser(actions, goto):
 
 lr_parser(actions, goto)
 
-def testeBruto():
-    print(actions["varinicio"][2])
-
-#testeBruto()
