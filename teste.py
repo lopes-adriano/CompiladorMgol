@@ -15,7 +15,7 @@ auxFimArq = False
 isToken = False
 erroLexico = False
 
-actions = pd.read_csv('Actions.csv')
+actions = pd.read_csv('Actions2.csv')
 goto = pd.read_csv('GoTo.csv')
 
 
@@ -30,7 +30,39 @@ with open("FONTE.alg", "r") as f:
 def action(s,a):
   acao = actions.at[s,a]
   return acao
-  
+
+
+def trata_Erro(pilha, acao, a):
+    if acao == "e0":
+        print("Tratamento para o erro e0")
+        pilha.append(2)
+        return pilha, a
+    elif acao == "e1":
+        print("Tratamento para o erro 1")
+    elif acao == "e2":
+        print("Tratamento para o Erro 2")
+    else:
+        print(f"Panic Mode Ativado: Erro tipo {acao}")
+        pilha, a = panicMode(pilha, a)
+        return pilha, a
+
+
+def panicMode(apilha, a):
+    while(a.classe != "EOF"):
+        npilha = apilha.copy()
+        while (len(npilha) > 0):
+            acao = action(npilha[-1],a.classe)
+            if(acao[0] != "e"):
+                return npilha, a
+            npilha.pop()
+        a = util.scanner(arquivo)
+    return []
+                
+def error_acao(pilha, a):
+    acao = action(pilha[-1],a.classe)
+
+    
+
   
 def lr_parser(actions, goto):
     global auxFimArq
@@ -54,6 +86,10 @@ def lr_parser(actions, goto):
             t = pilha[-1]
             pilha.append(int(goto.at[t,p[0]]))
             print(prod)
+        elif acao[0] == "e":
+            print(acao)
+            pilha, a = trata_Erro(pilha, acao, a)
+            print(pilha)
         elif acao == 'acc':
             break
     
