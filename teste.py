@@ -38,7 +38,7 @@ print(gramatica[6])
 def lr_parser(actions, goto):
     pilha = [0]
     estado = pilha[-1]
-    a = util.scanner('arquivo').classe
+    a = util.scanner(arquivo).classe
     print(a)
     
     print(actions[a][estado])
