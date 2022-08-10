@@ -1,12 +1,10 @@
 inicio
     varinicio
-        literal A; 
-        literal B;
-        inteiro B;
+        literal A, B;
         inteiro D;
         real C ;
     varfim;
-    escreva @"Digite B:";
+    escreva "Digite B:";
     leia B;
     escreva "Digite A:";
     leia A;
@@ -14,7 +12,7 @@ inicio
     entao
         se(B<=4)
         entao
-            escreva "B esta entre 2 e 4"{Teste};
+            escreva "B esta entre 2 e 4";
         fimse
     fimse
     B<-B+1;

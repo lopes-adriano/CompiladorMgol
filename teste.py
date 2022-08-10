@@ -19,49 +19,43 @@ actions = pd.read_csv('Actions.csv')
 goto = pd.read_csv('GoTo.csv')
 
 
+
 with open('gramatica-Mgol.txt') as file:
-    gramatica = {regra: file.readline().replace('\n','') for regra in range(1,40)}
+    gramatica = {regra: file.readline().replace('\n','') for regra in range(0,39)}
 
 with open("FONTE.alg", "r") as f:
     arquivo = f.read()
 
-def acao(acao, a, pilha):
-    estado = ""
-    ant_est = 0
-    gram = ""
-    nregra = ""
-    if(acao[0] == "s"):
-        pilha.append(a)
-        for c in range(1, len(acao)):
-            estado += acao[c]
-        pilha.append(int(estado))
-        return pilha
-    if(acao[0] == "r"):
-        for c in range(1, len(acao)):
-            nregra += acao[c]
-        gram = gramatica[int(nregra)]
-        gram = gram.split(" ")
-        for c in range(0, (len(gram)-2)*2):
-            pilha.pop()
-        ant_est = pilha[len(pilha)-1]
-        ant_est = goto[gram[0]][int(ant_est)]
-        pilha.append(gram[0])
-        pilha.append(ant_est)
-        return pilha
 
+def action(s,a):
+  acao = actions.at[s,a]
+  return acao
+  
+  
 def lr_parser(actions, goto):
-    pilha = [0]
-    estado = 0
+    pilha = ['EOF',0]
+    s = pilha[-1]
+    a = util.scanner(arquivo).classe
     while(True):
-
-        estado = pilha[len(pilha)-1]
-
-        a = util.scanner(arquivo).classe
-        print(a)
-        print(estado)
-        print(actions[a][estado])
-        pilha = acao(actions[a][estado], a, pilha)
-        print(pilha)
+        s = pilha[-1]
+        acao = action(s,a)
+        if acao[0] == 's':
+            pilha.append(int(acao[1:len(acao)]))
+            a = util.scanner(arquivo).classe
+        elif acao[0] == 'r':
+            prod = gramatica[int(acao[1:len(acao)])]
+            p = prod.split(' ')
+            body = p[2:len(p)]
+            for i in range(0,len(body)):
+                pilha.pop()
+            t = pilha[-1]
+            pilha.append(int(goto.at[t,p[0]]))
+            print(prod)
+        elif acao == 'acc':
+            print('DEU CERTO PORRA')
+            break
+    
+        
 
 
 
