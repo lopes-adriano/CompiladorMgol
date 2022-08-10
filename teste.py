@@ -1,3 +1,4 @@
+#encoding: utf-8
 import copy
 from numpy import append
 import pandas as pd
@@ -22,6 +23,10 @@ goto = pd.read_csv('GoTo.csv')
 
 with open('gramatica-Mgol.txt') as file:
     gramatica = {regra: file.readline().replace('\n','') for regra in range(0,39)}
+
+with open('erros.txt', encoding = 'utf-8') as file:
+    erros = {erro: file.readline().replace('\n','') for erro in range(0,77)}
+
 
 with open("FONTE.alg", "r") as f:
     arquivo = f.read()
