@@ -1,8 +1,26 @@
+
 from classToken import Token
 from tabelaDeSimbolos import TabelaSimbolos
 from afd import *
 import colorama
 from colorama import Fore
+import pathlib
+import sys
+
+pp = str(pathlib.Path(__file__).parent.resolve())
+print(pp)
+
+pinto = ""
+
+for c in range(0, len(pp)-17):
+    pinto += pp[c]
+
+print(pinto)
+
+sys.path.insert(1, pinto)
+
+from AnalisadorSintatico import teste
+
 
 
 colorama.init(autoreset = True)
@@ -194,4 +212,5 @@ def main():
     simbolos.showTable()
 
 
-main()
+#main()
+teste.fun()
