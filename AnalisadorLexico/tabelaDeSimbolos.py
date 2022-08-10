@@ -1,4 +1,4 @@
-from classToken import Token
+from AnalisadorLexico.classToken import Token
 from tabulate import tabulate
 
 class TabelaSimbolos:

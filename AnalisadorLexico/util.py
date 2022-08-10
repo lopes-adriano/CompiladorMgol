@@ -1,29 +1,10 @@
 
-from classToken import Token
-from tabelaDeSimbolos import TabelaSimbolos
-from afd import *
-import colorama
+from .classToken import Token
+from .tabelaDeSimbolos import TabelaSimbolos
+from .afd import *
 from colorama import Fore
-import pathlib
-import sys
-
-pp = str(pathlib.Path(__file__).parent.resolve())
-print(pp)
-
-pinto = ""
-
-for c in range(0, len(pp)-17):
-    pinto += pp[c]
-
-print(pinto)
-
-sys.path.insert(1, pinto)
-
-from AnalisadorSintatico import teste
 
 
-
-colorama.init(autoreset = True)
 
 afd = AFD_LEX()
 afd.mgol_trans()
@@ -211,6 +192,3 @@ def main():
     print("\n\nTABELA DE SIMBOLOS\n\n")
     simbolos.showTable()
 
-
-#main()
-teste.fun()

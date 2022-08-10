@@ -1,5 +1,5 @@
-from classToken import Token
-from tabelaDeSimbolos import TabelaSimbolos
+from AnalisadorLexico.classToken import Token
+from AnalisadorLexico.tabelaDeSimbolos import TabelaSimbolos
 import colorama
 from colorama import Fore
 
