@@ -42,33 +42,40 @@ def printErro(acao, a):
     print(f'{Fore.RED}{e} \nlinha: {util.linha} coluna: {util.coluna-len(a.lexema)}'.replace('{tok}', a.lexema))
 
     
-def trata_Erro(pilha, acao, a):
+def trata_Erro(apilha, acao, a):
+    pilha = copy.deepcopy(apilha)
     printErro(acao, a)
     if acao == "e0":
-        print("Tratamento para o erro e0")
+        print(f"\n-----Erro detectado\n-----Tratamento para o erro {acao}")
         pilha.append("inicio")
         pilha.append(2)
         return pilha, a
-    elif acao == "e1":
-        print("Tratamento para o erro 1")
     elif acao == "e2":
-        print("Tratamento para o Erro 2")
-    elif acao == "e55":
+        print(f"\n-----Erro detectado\n-----Tratamento para o erro {acao}")
+        pilha.append("varinicio")
+        pilha.append(4)
+        return pilha, a
+    elif (acao == "e55")or(acao == "e56")or(acao == "e16")or(acao == "e45")or(acao == "e46")or(acao == "e17"):
+        print(f"\n-----Erro detectado\n-----Tratamento para o erro {acao}")
         if(a.classe == "entao"):
-            while(pilha[-2] != "se"):
+            while(len(pilha)>0):
                 pilha.pop()
                 pilha.pop()
-            pilha.pop()
-            pilha.pop()
-            pilha.append('CAB')
-            pilha.append(14)
+                if(pilha[-2] != "se"):
+                    pilha.append('CAB')
+                    pilha.append(14)
+                    break
+                elif(pilha[-2] != "repita"):
+                    pilha.append('CABR')
+                    pilha.append(15)
+                    break
             a = util.scanner2(arquivo)
             return pilha, a
         else:
             pilha, a = panicMode(pilha, a)
             return pilha, a
     else:
-        print(f"Panic Mode Ativado: Erro tipo {acao}")
+        print(f"\n-----Erro detectado. Panic Mode Ativado\n-----Tratamento para o erro {acao}")
         pilha, a = panicMode(pilha, a)
         return pilha, a
 
@@ -104,6 +111,7 @@ def lr_parser(actions, goto):
         if acao[0] == 's':
             pilha.append(a.classe)
             pilha.append(int(acao[1:len(acao)]))
+
             a = util.scanner2(arquivo)
             if(s == 'EOF'):
                 auxFimArq = True
@@ -118,14 +126,16 @@ def lr_parser(actions, goto):
             pilha.append(p[0])
             pilha.append(int(goto.at[t,p[0]]))
            # print(pilha)
+
             print(prod)
+            print(util.linha)
         elif acao[0] == "e":
             print(acao)
             pilha, a = trata_Erro(pilha, acao, a)
           #  print(pilha)
         elif acao == 'acc':
-            break
-    
+            break   
+        print(pilha)
         
 
 
