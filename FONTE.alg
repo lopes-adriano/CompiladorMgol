@@ -1,4 +1,4 @@
-@
+inicio
     varinicio
         literal A, B
         inteiro D;
@@ -8,9 +8,9 @@
     leia B;
     escreva "Digite A:";
     leia A;
-    se(B{DridriNinja}
+    se(B<4
     entao
-        se(B<=4.)
+        se(B<=4)
         entao
             escreva "B esta entre 2 e 4";
         fimse

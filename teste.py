@@ -61,11 +61,15 @@ def trata_Erro(apilha, acao, a):
             while(len(pilha)>0):
                 pilha.pop()
                 pilha.pop()
-                if(pilha[-2] != "se"):
+                if(pilha[-2] == "se"):
+                    pilha.pop()
+                    pilha.pop()
                     pilha.append('CAB')
                     pilha.append(14)
                     break
-                elif(pilha[-2] != "repita"):
+                elif(pilha[-2] == "repita"):
+                    pilha.pop()
+                    pilha.pop()
                     pilha.append('CABR')
                     pilha.append(15)
                     break
