@@ -1,4 +1,3 @@
-#encoding: utf-8
 import copy
 from numpy import append
 import pandas as pd
@@ -23,10 +22,6 @@ goto = pd.read_csv('GoTo.csv')
 
 with open('gramatica-Mgol.txt') as file:
     gramatica = {regra: file.readline().replace('\n','') for regra in range(0,39)}
-
-with open('erros.txt', encoding = 'utf-8') as file:
-    erros = {erro: file.readline().replace('\n','') for erro in range(0,77)}
-
 
 with open("FONTE.alg", "r") as f:
     arquivo = f.read()
@@ -60,7 +55,7 @@ def panicMode(apilha, a):
             if(acao[0] != "e"):
                 return npilha, a
             npilha.pop()
-        a = util.scanner(arquivo)
+        a = util.scanner2(arquivo)
     return []
                 
 def error_acao(pilha, a):
@@ -73,13 +68,14 @@ def lr_parser(actions, goto):
     global auxFimArq
     pilha = ['EOF',0]
     s = pilha[-1]
-    a = util.scanner(arquivo)
+    a = util.scanner2(arquivo)
+
     while(True):
         s = pilha[-1]
         acao = action(s,a.classe)
         if acao[0] == 's':
             pilha.append(int(acao[1:len(acao)]))
-            a = util.scanner(arquivo)
+            a = util.scanner2(arquivo)
             if(s == 'EOF'):
                 auxFimArq = True
         elif acao[0] == 'r':

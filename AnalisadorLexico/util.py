@@ -132,6 +132,12 @@ def trataErro(estado, c, lexema):
         return token
 
 
+def scanner2(arquivo):
+    token = scanner(arquivo)
+    while(token.classe == "comentário"):
+        token = scanner(arquivo)
+    return token
+
 def scanner(arquivo):
     global auxFimArq
     global isToken
@@ -184,7 +190,7 @@ def main():
     with open("FONTE.alg", "r") as f:
         arquivo = f.read()
     while(auxFimArq == False):
-        tk_retorno = scanner(arquivo)
+        tk_retorno = scanner2(arquivo)
         if(tk_retorno.classe != "comentário"):
             listaTokens.append(tk_retorno)
             print(tk_retorno)
