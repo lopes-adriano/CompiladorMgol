@@ -38,7 +38,7 @@ def action(s,a):
 
 def printErro(acao, a):
     global erros
-    e = erros.get(int(acao[1:len(acao)]))
+    e = erros.get(int(acao[1:len(acao)])-1)
     print(f'{Fore.RED}{e} \nlinha: {util.linha} coluna: {util.coluna-len(a.lexema)}'.replace('{tok}', a.lexema))
 
     
@@ -129,17 +129,16 @@ def lr_parser(actions, goto):
             t = pilha[-1]
             pilha.append(p[0])
             pilha.append(int(goto.at[t,p[0]]))
-           # print(pilha)
 
             print(prod)
-            print(util.linha)
+            #print(util.linha)
         elif acao[0] == "e":
             print(acao)
             pilha, a = trata_Erro(pilha, acao, a)
           #  print(pilha)
         elif acao == 'acc':
             break   
-        print(pilha)
+        #print(pilha)
         
 
 
