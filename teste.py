@@ -42,6 +42,20 @@ def trata_Erro(pilha, acao, a):
         print("Tratamento para o erro 1")
     elif acao == "e2":
         print("Tratamento para o Erro 2")
+    elif acao == "e55":
+        if(a.classe == "entao"):
+            while(pilha[-2] != "se"):
+                pilha.pop()
+                pilha.pop()
+            pilha.pop()
+            pilha.pop()
+            pilha.append('CAB')
+            pilha.append(14)
+            a = util.scanner2(arquivo)
+            return pilha, a
+        else:
+            pilha, a = panicMode(pilha, a)
+            return pilha, a
     else:
         print(f"Panic Mode Ativado: Erro tipo {acao}")
         pilha, a = panicMode(pilha, a)
@@ -68,6 +82,7 @@ def error_acao(pilha, a):
   
 def lr_parser(actions, goto):
     global auxFimArq
+
     pilha = ['EOF',0]
     s = pilha[-1]
     a = util.scanner2(arquivo)

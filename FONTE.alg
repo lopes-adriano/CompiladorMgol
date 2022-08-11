@@ -8,7 +8,7 @@
     leia B;
     escreva "Digite A:";
     leia A;
-    se(B>2){DridriNinja}
+    se(B{DridriNinja}
     entao
         se(B<=4)
         entao
