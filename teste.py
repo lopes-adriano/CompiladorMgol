@@ -35,6 +35,7 @@ def action(s,a):
 def trata_Erro(pilha, acao, a):
     if acao == "e0":
         print("Tratamento para o erro e0")
+        pilha.append("inicio")
         pilha.append(2)
         return pilha, a
     elif acao == "e1":
@@ -55,6 +56,7 @@ def panicMode(apilha, a):
             if(acao[0] != "e"):
                 return npilha, a
             npilha.pop()
+            npilha.pop()
         a = util.scanner2(arquivo)
     return []
                 
@@ -74,6 +76,7 @@ def lr_parser(actions, goto):
         s = pilha[-1]
         acao = action(s,a.classe)
         if acao[0] == 's':
+            pilha.append(a.classe)
             pilha.append(int(acao[1:len(acao)]))
             a = util.scanner2(arquivo)
             if(s == 'EOF'):
@@ -84,8 +87,11 @@ def lr_parser(actions, goto):
             body = p[2:len(p)]
             for i in range(0,len(body)):
                 pilha.pop()
+                pilha.pop()
             t = pilha[-1]
+            pilha.append(p[0])
             pilha.append(int(goto.at[t,p[0]]))
+            print(pilha)
             print(prod)
         elif acao[0] == "e":
             print(acao)
