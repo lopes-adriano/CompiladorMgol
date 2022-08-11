@@ -50,44 +50,63 @@ def trata_Erro(apilha, acao, a):
         pilha.append("inicio")
         pilha.append(2)
         return pilha, a
+    if acao == "e1":
+        while(a.classe != "EOF"):
+            a = util.scanner2(arquivo)
+        return pilha, a
     elif acao == "e2":
         print(f"\n-----Erro detectado\n-----Tratamento para o erro {acao}")
         pilha.append("varinicio")
         pilha.append(4)
         return pilha, a
-    elif (acao == "e55")or(acao == "e56")or(acao == "e16")or(acao == "e45")or(acao == "e46")or(acao == "e17"):
+    elif acao == "e17":
+        pilha.append("ab_p")
+        pilha.append(46)
+        return pilha, a
+    elif (acao == "e55")or(acao == "e56")or(acao == "e16")or(acao == "e45")or(acao == "e46"):
         print(f"\n-----Erro detectado\n-----Tratamento para o erro {acao}")
-        if(a.classe == "entao"):
-            while(len(pilha)>0):
+        while(len(pilha)>0):
+            if(pilha[-2] == "se"):
                 pilha.pop()
                 pilha.pop()
-                if(pilha[-2] == "se"):
-                    pilha.pop()
-                    pilha.pop()
-                    pilha.append('CAB')
-                    pilha.append(14)
-                    break
-                elif(pilha[-2] == "repita"):
-                    pilha.pop()
-                    pilha.pop()
-                    pilha.append('CABR')
-                    pilha.append(15)
-                    break
-            a = util.scanner2(arquivo)
-            return pilha, a
-        else:
-            pilha, a = panicMode(pilha, a)
-            return pilha, a
+                pilha.append('CAB')
+                pilha.append(14)
+                if(a.classe == "entao"):
+                    a = util.scanner2(arquivo)
+                break
+            elif(pilha[-2] == "repita"):
+                pilha.pop()
+                pilha.pop()
+                pilha.append('CABR')
+                pilha.append(15)
+                break
+            pilha.pop()
+            pilha.pop()
+        return pilha, a
     else:
         print(f"\n-----Erro detectado. Panic Mode Ativado\n-----Tratamento para o erro {acao}")
         pilha,a = panicMode(pilha, a)
         return pilha, a
 
+def redux(apilha, a):
+    pilha = copy.deepcopy(apilha)
+    acao = action(pilha[-1],a.classe)
+    prod = gramatica[int(acao[1:len(acao)])]
+    p = prod.split(' ')
+    body = p[2:len(p)]
+    for i in range(0,len(body)):
+        pilha.pop()
+        pilha.pop()
+    t = pilha[-1]
+    pilha.append(p[0])
+    pilha.append(int(goto.at[t,p[0]]))
+    print(prod)
+    return pilha
 
 def panicMode(apilha, a):
     while(a.classe != "EOF"):
         npilha = copy.deepcopy(apilha)
-        while (npilha):
+        while npilha[-1] != "EOF":
             acao = action(npilha[-1],a.classe)
             if(acao[0] != "e"):
                 return npilha, a
@@ -138,7 +157,7 @@ def lr_parser(actions, goto):
           #  print(pilha)
         elif acao == 'acc':
             break   
-        #print(pilha)
+        print(pilha)
         
 
 
