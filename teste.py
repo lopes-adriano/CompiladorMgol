@@ -1,7 +1,8 @@
 import copy
 from numpy import append
 import pandas as pd
-from AnalisadorLexico import afd, classToken, util, tabelaDeSimbolos
+from colorama import Fore
+from AnalisadorLexico import afd, util, tabelaDeSimbolos
 
 
 lex = afd.AFD_LEX()
@@ -38,7 +39,7 @@ def action(s,a):
 def printErro(acao, a):
     global erros
     e = erros.get(int(acao[1:len(acao)]))
-    print(f'{e}'.replace('{tok}', a.lexema))
+    print(f'{Fore.RED}{e} \nlinha: {util.linha} coluna: {util.coluna-len(a.lexema)}'.replace('{tok}', a.lexema))
 
     
 def trata_Erro(pilha, acao, a):
@@ -74,7 +75,7 @@ def trata_Erro(pilha, acao, a):
 
 def panicMode(apilha, a):
     while(a.classe != "EOF"):
-        npilha = apilha.copy()
+        npilha = copy.deepcopy(apilha)
         while (len(npilha) > 0):
             acao = action(npilha[-1],a.classe)
             if(acao[0] != "e"):
@@ -116,12 +117,12 @@ def lr_parser(actions, goto):
             t = pilha[-1]
             pilha.append(p[0])
             pilha.append(int(goto.at[t,p[0]]))
-            print(pilha)
+           # print(pilha)
             print(prod)
         elif acao[0] == "e":
             print(acao)
             pilha, a = trata_Erro(pilha, acao, a)
-            print(pilha)
+          #  print(pilha)
         elif acao == 'acc':
             break
     

@@ -1,7 +1,6 @@
 from AnalisadorLexico.classToken import Token
 from AnalisadorLexico.tabelaDeSimbolos import TabelaSimbolos
 import colorama
-from colorama import Fore
 
 
 colorama.init(autoreset = True)

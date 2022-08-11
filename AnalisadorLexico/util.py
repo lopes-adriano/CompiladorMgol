@@ -134,7 +134,7 @@ def trataErro(estado, c, lexema):
 
 def scanner2(arquivo):
     token = scanner(arquivo)
-    while(token.classe == "comentário"):
+    while(token.classe == "comentário" or token.classe == "ERRO"):
         token = scanner(arquivo)
     return token
 

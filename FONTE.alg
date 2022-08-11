@@ -1,6 +1,6 @@
-
+@
     varinicio
-        literal A, B;
+        literal A, B
         inteiro D;
         real C ;
     varfim;
@@ -10,7 +10,7 @@
     leia A;
     se(B{DridriNinja}
     entao
-        se(B<=4)
+        se(B<=4.)
         entao
             escreva "B esta entre 2 e 4";
         fimse
