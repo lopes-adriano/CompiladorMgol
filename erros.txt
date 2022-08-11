@@ -11,6 +11,7 @@ Erro sintático: expressão esperada antes de '{tok}'.
 Erro sintático: token '{tok}' inesperado.
 Erro sintático: identificador esperado antes de '{tok}'.
 Erro sintático: identificador, constante literal ou constante numérica esperada antes de '{tok}'.
+Erro sintático: '=' esperado antes de '{tok}'.
 Erro sintático: expressão esperada antes de '{tok}'.
 Erro sintático: expressão esperada antes de '{tok}'.
 Erro sintático: '(' esperado antes '{tok}'.
