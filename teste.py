@@ -20,11 +20,14 @@ goto = pd.read_csv('GoTo.csv')
 
 
 
-with open('gramatica-Mgol.txt') as file:
+with open('gramatica-Mgol.txt', 'r') as file:
     gramatica = {regra: file.readline().replace('\n','') for regra in range(0,39)}
 
 with open("FONTE.alg", "r") as f:
     arquivo = f.read()
+
+with open('erros.txt', 'r', encoding='utf-8') as file:
+    erros = {e: file.readline().replace('\n','') for e in range(0,77)}
 
 
 def action(s,a):
@@ -32,7 +35,14 @@ def action(s,a):
   return acao
 
 
+def printErro(acao, a):
+    global erros
+    e = erros.get(int(acao[1:len(acao)]))
+    print(f'{e}'.replace('{tok}', a.lexema))
+
+    
 def trata_Erro(pilha, acao, a):
+    printErro(acao, a)
     if acao == "e0":
         print("Tratamento para o erro e0")
         pilha.append("inicio")
