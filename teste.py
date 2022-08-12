@@ -45,8 +45,8 @@ def printErro(acao, a):
 def trata_Erro(apilha, acao, a):
     pilha = copy.deepcopy(apilha)
     printErro(acao, a)
+    print(f"\n-----Erro detectado\n-----Tratamento para o erro")
     if acao == "e0":
-        print(f"\n-----Erro detectado\n-----Tratamento para o erro {acao}")
         pilha.append("inicio")
         pilha.append(2)
         return pilha, a
@@ -55,16 +55,115 @@ def trata_Erro(apilha, acao, a):
             a = util.scanner2(arquivo)
         return pilha, a
     elif acao == "e2":
-        print(f"\n-----Erro detectado\n-----Tratamento para o erro {acao}")
         pilha.append("varinicio")
         pilha.append(4)
+        return pilha, a
+    elif acao == "e5":
+        pilha = redux(pilha, "r1")
+        return pilha, a
+    elif acao == "e10":
+        pilha = redux(pilha, "r38")
+        return pilha, a
+    elif acao == "e11":
+        pilha.append("id")
+        pilha.append(29)
+        return pilha, a
+    elif acao == "e13":
+        pilha.append("rcb")
+        pilha.append(34)
+        return pilha, a
+    elif acao == "e16":
+        pilha.append("ab_p")
+        pilha.append(45)
         return pilha, a
     elif acao == "e17":
         pilha.append("ab_p")
         pilha.append(46)
         return pilha, a
+    elif acao == "e20":
+        pilha.append("pt_v")
+        pilha.append(48)
+        return pilha, a
+    elif acao == "e21":
+        pilha.append("id")
+        pilha.append(50)
+        return pilha, a
+    elif acao == "e22":
+        pilha = redux(pilha, "r8")
+        return pilha, a
+    elif acao == "e23":
+        pilha = redux(pilha, "r9")
+        return pilha, a
+    elif acao == "e24":
+        pilha = redux(pilha, "r10")
+        return pilha, a
+    elif acao == "e25":
+        pilha = redux(pilha, "r11")
+        return pilha, a
+    elif acao == "e26":
+        pilha = redux(pilha, "r17")
+        return pilha, a
+    elif acao == "e27":
+        pilha = redux(pilha, "r23")
+        return pilha, a
+    elif acao == "e28":
+        pilha = redux(pilha, "r31")
+        return pilha, a
+    elif acao == "e29":
+        pilha.append("pt_v")
+        pilha.append(51)
+        return pilha, a
+    elif acao == "e30":
+        pilha.append("pt_v")
+        pilha.append(52)
+        return pilha, a
+    elif acao == "e31":
+        pilha = redux(pilha, "r14")
+        return pilha, a
+    elif acao == "e32":
+        pilha = redux(pilha, "r15")
+        return pilha, a
+    elif acao == "e33":
+        pilha = redux(pilha, "r16")
+        return pilha, a
+    elif acao == "e49":
+        pilha.append("pt_v")
+        pilha.append(66)
+        return pilha, a
+    elif acao == "e53":
+        pilha.append("pt_v")
+        pilha.append(68)
+        return pilha, a
+    elif acao == "e63":
+        pilha.append("fc_p")
+        pilha.append(70)
+        return pilha, a
+    elif acao == "e64":
+        pilha.append("opr")
+        pilha.append(71)
+        return pilha, a
+    elif acao == "e65":
+        pilha.append("fc_p")
+        pilha.append(72)
+        return pilha, a
+    elif acao == "e67":
+        pilha.append("id")
+        pilha.append(50)
+        return pilha, a
+    elif acao == "e70":
+        pilha.append("entao")
+        pilha.append(75)
+        return pilha, a
+    elif acao == "e73":
+        pilha = redux(pilha, "r6")
+        return pilha, a
+    elif acao == "e74":
+        pilha = redux(pilha, "r19")
+        return pilha, a
+    elif acao == "e76":
+        pilha = redux(pilha, "r26")
+        return pilha, a
     elif (acao == "e55")or(acao == "e56")or(acao == "e16")or(acao == "e45")or(acao == "e46"):
-        print(f"\n-----Erro detectado\n-----Tratamento para o erro {acao}")
         while(len(pilha)>0):
             if(pilha[-2] == "se"):
                 pilha.pop()
@@ -88,9 +187,8 @@ def trata_Erro(apilha, acao, a):
         pilha,a = panicMode(pilha, a)
         return pilha, a
 
-def redux(apilha, a):
+def redux(apilha, acao):
     pilha = copy.deepcopy(apilha)
-    acao = action(pilha[-1],a.classe)
     prod = gramatica[int(acao[1:len(acao)])]
     p = prod.split(' ')
     body = p[2:len(p)]
@@ -106,7 +204,7 @@ def redux(apilha, a):
 def panicMode(apilha, a):
     while(a.classe != "EOF"):
         npilha = copy.deepcopy(apilha)
-        while npilha[-1] != "EOF":
+        while npilha:
             acao = action(npilha[-1],a.classe)
             if(acao[0] != "e"):
                 return npilha, a
