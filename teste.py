@@ -51,8 +51,8 @@ def printErro(acao, a):
     
 def trata_Erro(apilha, acao, a):
     pilha = copy.deepcopy(apilha)
-    printErro(acao, a)
-    print(f"\n-----Erro detectado\n-----Tratamento para o erro")
+    #printErro(acao, a)
+    #print(f"\n-----Erro detectado\n-----Tratamento para o erro")
     if acao == "e0":
         pilha.append("inicio")
         pilha.append(2)
@@ -190,7 +190,7 @@ def trata_Erro(apilha, acao, a):
             pilha.pop()
         return pilha, a
     else:
-        print(f"\n-----Erro detectado. Panic Mode Ativado\n-----Tratamento para o erro {acao}")
+        #print(f"\n-----Erro detectado. Panic Mode Ativado\n-----Tratamento para o erro {acao}")
         pilha,a = panicMode(pilha, a)
         return pilha, a
 
@@ -219,10 +219,6 @@ def panicMode(apilha, a):
             npilha.pop()
         a = util.scanner2(arquivo)
     return [], a
-                
-def error_acao(pilha, a):
-    acao = action(pilha[-1],a.classe)
-
     
 
   
@@ -257,12 +253,12 @@ def lr_parser(actions, goto):
             print(prod)
             #print(util.linha)
         elif acao[0] == "e":
-            print(acao)
+            #print(acao)
             pilha, a = trata_Erro(pilha, acao, a)
           #  print(pilha)
         elif acao == 'acc':
             break   
-        print(pilha)
+        #print(pilha)
         
 
 

@@ -121,14 +121,14 @@ def trataErro(estado, c, lexema):
     elif(estado in range(7, 8)):
         tipoErro = "literal inválido"
     elif(estado == 9):
-        tipoErro = "Id inválido"
+        tipoErro = "identificador inválido"
     elif(estado in range(10, 11)):
-        tipoErro = "Comentario"
+        tipoErro = "comentário incompleto"
     else:
         tipoErro = "Lexico"
     if(naoIgnora(c)and(lexema != "")):
         token = Token(lexema, "ERRO", "NULO")
-        print(f"{Fore.YELLOW}ERRO do tipo {tipoErro} Identificado: Linha:{linha}")
+        print(f"{Fore.YELLOW}Erro Léxico: {tipoErro} identificado. \nlinha: {linha} coluna: {coluna-1}")
         return token
 
 
