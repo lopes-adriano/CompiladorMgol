@@ -51,7 +51,7 @@ def printErro(acao, a):
     
 def trata_Erro(apilha, acao, a):
     pilha = copy.deepcopy(apilha)
-    #printErro(acao, a)
+    printErro(acao, a)
     #print(f"\n-----Erro detectado\n-----Tratamento para o erro")
     if acao == "e0":
         pilha.append("inicio")

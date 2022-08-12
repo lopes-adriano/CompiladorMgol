@@ -78,8 +78,8 @@ def geraToken(lexema, estado):
                 token = idToken(lexema, estado)
                 return token
             except KeyError:
-                print("Não foi possivel gerar Token")
-                print(f"Estado:{estado}   Lexema:{lexema}")
+                #print("Não foi possivel gerar Token")
+                #print(f"Estado:{estado}   Lexema:{lexema}")
                 token = Token(lexema, "ERRO", "NULL")
                 return token
 
