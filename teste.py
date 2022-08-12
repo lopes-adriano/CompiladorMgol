@@ -16,18 +16,18 @@ auxFimArq = False
 isToken = False
 erroLexico = False
 
-actions = pd.read_csv('Actions2.csv')
-goto = pd.read_csv('GoTo.csv')
+actions = pd.read_csv('AnalisadorSintatico/Actions2.csv')
+goto = pd.read_csv('AnalisadorSintatico/GoTo.csv')
 
 
 
-with open('gramatica-Mgol.txt', 'r') as file:
+with open('AnalisadorSintatico/gramatica-Mgol.txt', 'r') as file:
     gramatica = {regra: file.readline().replace('\n','') for regra in range(0,39)}
 
 with open("FONTE.alg", "r") as f:
     arquivo = f.read()
 
-with open('erros.txt', 'r', encoding='utf-8') as file:
+with open('AnalisadorSintatico/erros.txt', 'r', encoding='utf-8') as file:
     erros = {e: file.readline().replace('\n','') for e in range(0,77)}
 
 
@@ -39,7 +39,14 @@ def action(s,a):
 def printErro(acao, a):
     global erros
     e = erros.get(int(acao[1:len(acao)])-1)
-    print(f'{Fore.RED}{e} \nlinha: {util.linha} coluna: {util.coluna-len(a.lexema)}'.replace('{tok}', a.lexema))
+    col = util.coluna-len(a.lexema)
+    if col < 1:
+        col = 1
+    if a.lexema == 'EOF':
+        print(f"{Fore.RED}Erro Sintático: a análise chegou ao fim do arquivo sem encontrar o token 'fim'")
+        print(f'{Fore.RED}linha: {util.linha} coluna: {col}')
+    else:
+        print(f'{Fore.RED}{e} \nlinha: {util.linha} coluna: {col}'.replace('{tok}', a.lexema))
 
     
 def trata_Erro(apilha, acao, a):
